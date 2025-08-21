@@ -10,7 +10,7 @@ while exit == 0:
     # Asks the user for their name.
     print("What is your name?")
     name = input()
-    # If they input "End" than set exit to 1, ending the while loop
+    # If they input "End" than set exit to 1, ending the while loop.
     if name == "End":
         exit = 1
     # If the name they input is an admin user, outputs Hello Admin User (whatever they input as their name)
