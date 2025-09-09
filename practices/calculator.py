@@ -25,16 +25,16 @@ while True:
         print('Invalid number')
 if operator == '+':
     output = num1+num2
-if operator == '-':
+elif operator == '-':
     output = num1-num2
-if operator == '*':
+elif operator == '*':
     output = num1*num2
-if operator == '/':
+elif operator == '/':
     output = num1/num2
-if operator == '%':
+elif operator == '%':
     output = num1%num2
-if operator == '**':
+elif operator == '**':
     output = num1**num2
-if operator == '//':
+elif operator == '//':
     output = num1//num2
 print(f'{num1:.2f} {operator} {num2:.2f} = {output:.2f}')
