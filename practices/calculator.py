@@ -9,7 +9,7 @@ while True:
         print('Invalid operator')
 while True:
     print('Enter first number')
-    num1 = input('> ')
+    num1 = input('> ').strip()
     if num1.isdigit():
         num1 = int(num1)
         break
@@ -17,9 +17,24 @@ while True:
         print('Invalid number')
 while True:
     print('Enter second number')
-    num2 = input('> ')
+    num2 = input('> ').strip()
     if num2.isdigit():
         num2 = int(num2)
         break
     else:
         print('Invalid number')
+if operator == '+':
+    output = num1+num2
+if operator == '-':
+    output = num1-num2
+if operator == '*':
+    output = num1*num2
+if operator == '/':
+    output = num1/num2
+if operator == '%':
+    output = num1%num2
+if operator == '**':
+    output = num1**num2
+if operator == '//':
+    output = num1//num2
+print(f'{num1} {operator} {num2} = {output}')
