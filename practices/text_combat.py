@@ -21,6 +21,9 @@ enemy_defense = (10 - enemy_attack) + random.randint(-1,2)
 time.sleep(1)
 print(f'Your Stats: Attack = {attack}, Defense = {defense}.')
 round = 1
+defend_actions = ['d','defend','dodge','defense']
+attack_actions = ['a','attack','kill','offense']
+temp_defense = defense
 while True:
     time.sleep(2)
     print(f'Round {round}')
@@ -40,6 +43,25 @@ while True:
             print(miss_message_2[second_word_choice])
     else:
         print(f'and hits! You take {damage} damage!')
-    
+    defense = temp_defense
+    time.sleep(2)
+    while True:
+
+        print("What action would you like to take? Attack or Defend: ")
+        action = input('> ').strip().lower()
+        if action in defend_actions or action in attack_actions:
+            break
+    time.sleep(1)
+    if action in attack_actions:
+        damage = ((attack / 2) + random.randint(1,10)) - ((enemy_defense / 2) + random.randint(2,5))
+        if damage < 1:
+            print('You miss!')
+        else:
+            print(f'You deal {damage} damage to {opponent}!')
+    elif action in defend_actions:
+        temp_defense = defense
+        defense = temp_defense * 2
+        print('You dodged elegantly.')
+
     round += 1
     
