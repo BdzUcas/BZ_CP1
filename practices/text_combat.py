@@ -24,6 +24,7 @@ round = 1
 defend_actions = ['d','defend','dodge','defense']
 attack_actions = ['a','attack','kill','offense']
 temp_defense = defense
+dodges = ['You dodge elegantly.','You dodge, sort of','You bravely defend yourself against the attack!']
 while True:
     time.sleep(2)
     print(f'Round {round}')
@@ -61,7 +62,7 @@ while True:
     elif action in defend_actions:
         temp_defense = defense
         defense = temp_defense * 2
-        print('You dodged elegantly.')
+        print(random.choice(dodges))
 
     round += 1
     
