@@ -24,9 +24,10 @@ round = 1
 defend_actions = ['d','defend','dodge','defense']
 attack_actions = ['a','attack','kill','offense']
 temp_defense = defense
-dodges = ['You dodge elegantly.','You dodge, sort of','You bravely defend yourself against the attack!','You try to dodge.','You leap backward in fright','You steel yourself for an attack','You hide - bravely of course','You dodge out of the way of the attack','You run away at full speed','You scream in terror']
-misses = ['You *almost* hit','You miss!','Your attack misses.','You impressively flourish your blade- oh, oh wow that looks very painful','Your attack misses horribly',"You plunge your blade directly into- that's a tree. Seriously, that's a tree.",'You miss','You miss!','You yell a battle cry! It does nothing.']
+dodges = ['You dodge elegantly.','You dodge, sort of','You bravely defend yourself against the attack!','You try to dodge.','You leap backward in fright','You steel yourself for an attack','You hide - bravely of course','You dodge out of the way of the attack','You run away at full speed','You scream in terror', 'You defend yourself against the incoming attack.']
+misses = ['You *almost* hit','You miss!','Your attack misses.','You impressively flourish your blade- oh, oh wow that looks very painful','Your attack misses horribly',"You plunge your blade directly into- that's a tree. Seriously, that's a tree.",'You miss','You miss!','You yell a battle cry! It does nothing.','Nothing happened',f'The {opponent} blocks your attack.','Your attack hits the ground.',f'Whoops, you accidently attacked something else instead. You deal {damage} damage to the {random.choice(first_word)} {random.choice(second_word)}!']
 hits = ['Your attack hits!','Wow! Awesome hit!','Oof- that looks painful.','Your hit lands, sort of.',f'You strike the {opponent} down.']
+enemy_hits = ['It hits!','And lands an impressive hit!','Oof- that looks painful.','And it works, sort of.','And it hits perfectly.','And hit!',"Oof- that's a lot of damage.",'and hit!','and lands an impressive attack.',"and it hits, but it wasn't very impressive"]
 
 while True:
     time.sleep(2)
@@ -46,7 +47,7 @@ while True:
         else:
             print(miss_message_2[second_word_choice])
     else:
-        print(f'and hits! You take {damage} damage!')
+        print(f'{random.choice(enemy_hits)} You take {damage} damage!')
     defense = temp_defense
     time.sleep(2)
     while True:
