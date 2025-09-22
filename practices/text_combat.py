@@ -11,7 +11,6 @@ time.sleep(1)
 print('Meet your opponent: ')
 time.sleep(1)
 first_word_choice = random.randint(0,len(first_word)-1)
-first_word_choice = len(first_word)-1
 second_word_choice = random.randint(0,len(second_word)-1)
 opponent = first_word[first_word_choice] + second_word[second_word_choice]
 print(opponent)
