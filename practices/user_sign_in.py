@@ -2,7 +2,7 @@
 users = ['bracken','dirk','warren']
 user_passwords = ['Fred 123','cool_guy7','1443']
 print('Sign In')
-yes_replys = ['y','yes','yep','ye','ya','yeah','yea','yop','sure','absolutly','affirmative','positive','cool with me','yees','yyes','yess','yyeess','yyees','yeess','YEAH','yeah, duh','duh','yup']
+yes_replys = ['y','yes','yep','ye','ya','yeah','yea','yop','sure','absolutly','affirmative','positive','cool with me','yees','yyes','yess','yyeess','yyees','yeess','YEAH','yeah, duh','duh','yup','of course','why not?','+','thumbs up!','i suppose','i suppose...','why not','why are there so many valid responses?','yum','waffles','absolutley','yay','yummy','infinite power','good','good with me','good.','nice','ok','okay','yoop','that\'s fine','yo','yeeah','yeaah','yyeah','yeahh','yyeeah','yyeaah','yyeahh','yeeaah','yeeahh','yeaahh','yyeeaah','yyeeahh','yyeaahh','yeeaahh']
 while True:
     print('\033[34mInput Username:')
     username = input('\033[0m> ').lower().strip()
@@ -20,7 +20,7 @@ while True:
                     print('\033[31mIncorrect Password. Try again:')
     else:
         print('\033[31mThat account does not exist. Would you like to create it? Y/N:')
-        if input('\033[0m> ').lower().strip() in yes_replys:
+        if input('\033[0m> ').lower().strip().replace('!','') in yes_replys:
             print('\033[34mEnter account password:\033[0m')
             password = input('\033[0m> ')
             users.append(username)
