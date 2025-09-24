@@ -61,13 +61,13 @@ while True:
     if action in attack_actions:
         damage = ((attack / 2) + random.randint(1,10)) - ((enemy_defense / 2) + random.randint(2,5))
         if damage < 1:
-            print(random.choice(misses))
+            print(f'\033[31m{random.choice(misses)}')
         else:
-            print(f'{random.choice(hits)} You deal {damage} damage to {opponent}!')
+            print(f'\033[32m{random.choice(hits)} You deal {damage} damage to {opponent}!')
     elif action in defend_actions:
         temp_defense = defense
         defense = temp_defense * 2
-        print(random.choice(dodges))
+        print(f'\033[34m{random.choice(dodges)}')
 
     round += 1
     
