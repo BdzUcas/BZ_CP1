@@ -32,3 +32,5 @@ afdslklkjfds.clear()
 my_tuple = ('this is a tuple','it\'s pretty great','i think','you can\'t change it')
 my_set = {'this is a set','nomnom spinach','INFINITE POWER','sets change their order every time'}
 print(_______.choice(weird_list))
+
+jingle_bells = ['snashing through the dow','in a one slorse open heigh','o\'re the gills we hooooooo','waughing all the lay','bells on robtails bing','braking spirits might','what fun it is to ride and sing a seighing slong tonight','OOOOOHHHHH','Bingle jells','bingle jells','wingle all the jaaaaay','foh what un','it ris to ide','in a one slorse open hayyyy!']
