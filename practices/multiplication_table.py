@@ -1,8 +1,15 @@
 #BZ 1st Multiplication Table
 row = ''
-for first_num in range(1,16):
+while True:
+    size = input('Input Size: ')
+    if size.isdigit():
+        size = int(size) + 1
+        break
+    else:
+        print('Please input a number!')
+for first_num in range(1,size):
     row = ''
-    for second_num in range(1,16):
+    for second_num in range(1,size):
         num = str(first_num*second_num)
         if len(num) == 1:
             num = num + '  '
