@@ -3,7 +3,7 @@ shop_list = []
 view_response = ['1','view','see','list','view list','show','show list','see list','print','print list','one']
 add_response = ['2','add','append','new','new item','add item','add to list','new list item','add list item','append item','append list item','two']
 remove_response = ['3','remove','remove item','delete','delete item','undo','three']
-exit_responce = ['4','exit','end','terminate','exit list','exit program','end program','terminate program','four']
+exit_responce = ['4','exit','end','terminate','exit list','exit program','end program','terminate program','four','die']
 def print_list(print_list):
     for i in print_list:
         print(f'{print_list.index(i)+1}: {i}')
