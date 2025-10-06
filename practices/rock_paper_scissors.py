@@ -21,9 +21,10 @@ actions = ['There was an error!',' smashed ',' smothered ',' snipped ',' consume
 rock_choices = ['rock','r','stone',rock,'smash','rock smash','destroy','obliterate']
 scissors_choices = ['scissors','s','cut','snippy snip','snip']
 paper_choices = ['paper','p','flap','flimsy','cover','papercut']
-while not False:
+exit = True
+while exit:
     while not False:
-        choice = input('Rock, paper, or scissors?\n').replace('!','').strip().lower()
+        choice = input('Rock, paper, scissors, or exit?\n').replace('!','').strip().lower()
         computer_choice = r.randint(1,3)
         if choice in rock_choices:
             choice = 1
@@ -37,8 +38,14 @@ while not False:
         elif choice == 'black hole':
             choice = 4
             break
+        elif choice == 'exit':
+            print('Exited Program!')
+            exit = False
+            break
         else:
             print('Please input a valid choice!')
+    if choice == 'exit':
+        continue
     print(f'{choices[choice]} \n vs. {choices[computer_choice]}')
     if choice == 4:
         print(f'Their {choices_strings[computer_choice]}{actions[computer_choice]}your {choices_strings[choice]}!')
