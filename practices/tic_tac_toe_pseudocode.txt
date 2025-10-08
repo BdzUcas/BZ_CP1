@@ -1,4 +1,27 @@
 show "Welcome to Tic Tac Toe!"
 show "You are Xs"
-show tic tac toe table
-ask "which space 1-9?"
+make three lists each with 3 blank items
+show lists in tic tac toe table format
+loop until one of these conditions is true: all three items in one list are the same or all item 1, 3, or 5s of the list are the same or item one of the first list, two of the second and three of the third are the same or item three of the first, two of the second and one of the third are the same, or the board is full.
+    loop forever:
+        ask "which space 1-9?"
+        if the answer is a number from 1 to 9 then:
+            exit loop
+        otherwise:
+            show "Please choose a number from 1-9!
+            return to the top of loop
+    if the answer is from 1-3:
+        replace that item of the first list with an X
+    otherwise if the answer is from 4-6:
+        replace that item minus 3 of the second list with an X
+    otherwise if the answer is from 7-9:
+        replace that item minus 6 of the third list with an X
+    otherwise:
+        show "there was an error!"
+    pick a random item from any of the lists
+    replace that item with an O
+if the board is full:
+    show "its a tie!"
+otherwise:
+    check which (X or O) won
+    show "(winner) won!"
