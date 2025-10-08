@@ -1,0 +1,4 @@
+show "Welcome to Tic Tac Toe!"
+show "You are Xs"
+show tic tac toe table
+ask "which space 1-9?"
