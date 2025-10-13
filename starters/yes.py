@@ -1,0 +1,1 @@
+this = 'haha'.islower("than you") #said the turtle to the hair
