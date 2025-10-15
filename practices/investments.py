@@ -1,8 +1,11 @@
 import time as t
 import random as r
+import useful_functions as u
 input_stocks = ['stocks','invest','1']
 input_sell_stocks = ['sell stocks','sell','3']
 input_pass = ['skip','pass','4']
+input_loan = ['free money','free','2','loan','money','moneys']
+
 print('Hello.')
 t.sleep(2)
 print('Welcome to ....')
@@ -27,15 +30,34 @@ stock_cost = 5
 stocks = 0
 stocks_amount = 0
 stock_change = 0
+loan = 0
+loan_turns = 0
+owed = 0
 while True:
     print(f'Turn {turn}. You have ${money}, and {stocks} stocks.')
     t.sleep(1)
     if stocks > 0:
         stock_change = r.randint(-2,2)
         if stock_cost + stock_change < 1:
-            stock_change = 0
+            stock_change = r.randint(0,1)
         stock_cost += stock_change
         print(f'The stock value is now {stock_cost}! It changed by {stock_change}.')
+        t.sleep(1)
+    if loan_turns > 0:
+        loan_turns -= 1
+        if loan_turns > 0:
+            print(f'You have {loan_turns} turns left to return the money!')
+        elif loan_turns == 0:
+            print('It\'s time! Pay up!')
+            t.sleep(1)
+            if owed > money:
+                print('Looks like you owe a bit too much!')
+                t.sleep(1)
+                print('Too bad, so sad, you LOSE')
+            else:
+                money -= owed
+                owed = 0
+                print('You now have ${money}.')
         t.sleep(1)
     activity = input('1. "Stocks!" \n2. "Free money!"\n3. Sell Stocks \n4. Pass\n5. End\n').lower().strip()
     if activity in input_stocks:
@@ -47,11 +69,12 @@ while True:
         t.sleep(1)
         print('The bank!')
         t.sleep(1)
-        while not False:
-            stocks_amount = input(f'How many stocks would you like to buy? They are each ${stock_cost}.\n')
-            if stocks_amount.isdigit():
-                stocks_amount = int(stocks_amount)
-                break
+        stocks_amount = u.int_input(f'How many stocks would you like to buy? They are each ${stock_cost}.\n','That\'s not a number, now is it?')
+        #while not False:
+        #    stocks_amount = input(f'How many stocks would you like to buy? They are each ${stock_cost}.\n')
+        #    if stocks_amount.isdigit():
+        #        stocks_amount = int(stocks_amount)
+        #        break
         if stocks_amount == 0:
             print('No stocks? Okay then.')
         elif stocks_amount * stock_cost > money:
@@ -63,12 +86,7 @@ while True:
     elif activity in input_sell_stocks:
         print('Here you can sell your stocks!')
         t.sleep(2)
-        while not False:
-            print('How many stocks would you like to sell?')
-            sell_stocks = input()
-            if sell_stocks.isdigit():
-                sell_stocks = int(sell_stocks)
-                break
+        sell_stocks = u.int_input('How many stocks would you like to sell?\n','That\'s not a number, now is it?')
         if sell_stocks > stocks:
             print('You don\'t have that many stocks!')
         elif sell_stocks == 0:
@@ -80,4 +98,22 @@ while True:
     elif activity in input_pass:
         print('You passed this turn.')
         pass
+    elif activity in input_loan:
+        print('You need some money, ay?')
+        t.sleep(2)
+        print('While don\'t worry about it! I got you covered.')
+        t.sleep(2)
+        print('I\'ll give you some right now if you\'ll pay it back later.')
+        t.sleep(2)
+        print('With interest, of course.')
+        t.sleep(1.5)
+        loan = u.int_input('So, what\'ll it be?\n','That\'s not a number, now is it?')
+        if loan == 0:
+            print('No money? Okay then.')
+        else:
+            print('Here\'s your ${loan}. Spend it wisely! I\'ll come collect the return in 5 turns.')
+            loan_turns = 6
+            owed = loan * 1.5
+            t.sleep(3)
+            print('That\'ll be ${owed} by the way.')
     t.sleep(2)
