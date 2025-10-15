@@ -8,17 +8,17 @@ t.sleep(2)
 print('Welcome to ....')
 t.sleep(2)
 print('The bank!')
-t.sleep(2)
+t.sleep(1)
 print('Yes, the bank.')
 t.sleep(2)
-print('Here, we do...')
-t.sleep(2)
-print('Investing!')
+print('Here, we...')
+t.sleep(1)
+print('Invest!')
 t.sleep(2)
 print('There are lots of ways to "invest" your money.')
 t.sleep(2)
 print('"Investing" works in turns.')
-t.sleep(2)
+t.sleep(1.5)
 print("Let's start!")
 t.sleep(2)
 turn = 1
@@ -28,14 +28,15 @@ stocks = 0
 stocks_amount = 0
 stock_change = 0
 while True:
-    print(f'Turn {turn}. You have ${money}')
-    t.sleep(2)
+    print(f'Turn {turn}. You have ${money}, and {stocks} stocks.')
+    t.sleep(1)
     if stocks > 0:
         stock_change = r.randint(-2,2)
         if stock_cost + stock_change < 1:
             stock_change = 0
         stock_cost += stock_change
         print(f'The stock value is now {stock_cost}! It changed by {stock_change}.')
+        t.sleep(1)
     activity = input('1. "Stocks!" \n2. "Free money!"\n3. Sell Stocks \n4. Pass\n5. End\n').lower().strip()
     if activity in input_stocks:
         print('Welcome to the stock market!')
@@ -58,8 +59,7 @@ while True:
         else:
             print('Thank you for buying my stocks!')
             money -= stocks_amount * stock_cost
-            stocks = stocks_amount
-        t.sleep(2)
+            stocks += stocks_amount
     elif activity in input_sell_stocks:
         print('Here you can sell your stocks!')
         t.sleep(2)
