@@ -7,19 +7,19 @@ input_pass = ['skip','pass','4']
 input_loan = ['free money','free','2','loan','money','moneys']
 
 print('Hello.')
-t.sleep(2)
+t.sleep(1.5)
 print('Welcome to ....')
 t.sleep(2)
 print('The bank!')
 t.sleep(1)
 print('Yes, the bank.')
-t.sleep(2)
+t.sleep(1.5)
 print('Here, we...')
 t.sleep(1)
 print('Invest!')
-t.sleep(2)
+t.sleep(1.5)
 print('There are lots of ways to "invest" your money.')
-t.sleep(2)
+t.sleep(1.5)
 print('"Investing" works in turns.')
 t.sleep(1.5)
 print("Let's start!")
@@ -39,7 +39,7 @@ while True:
     if stocks > 0:
         stock_change = r.randint(-2,2)
         if stock_cost + stock_change < 1:
-            stock_change = r.randint(0,1)
+            stock_change = r.randint(1,2)
         stock_cost += stock_change
         print(f'The stock value is now {stock_cost}! It changed by {stock_change}.')
         t.sleep(1)
@@ -53,11 +53,12 @@ while True:
             if owed > money:
                 print('Looks like you owe a bit too much!')
                 t.sleep(1)
-                print('Too bad, so sad, you LOSE')
+                print('Too bad, so sad, you lose.')
+                break
             else:
                 money -= owed
                 owed = 0
-                print('You now have ${money}.')
+                print(f'You now have ${money}.')
         t.sleep(1)
     activity = input('1. "Stocks!" \n2. "Free money!"\n3. Sell Stocks \n4. Pass\n5. End\n').lower().strip()
     if activity in input_stocks:
@@ -111,9 +112,10 @@ while True:
         if loan == 0:
             print('No money? Okay then.')
         else:
-            print('Here\'s your ${loan}. Spend it wisely! I\'ll come collect the return in 5 turns.')
+            print(f'Here\'s your ${loan}. Spend it wisely! I\'ll come collect the return in 5 turns.')
+            money += loan
             loan_turns = 6
             owed = loan * 1.5
             t.sleep(3)
-            print('That\'ll be ${owed} by the way.')
+            print(f'That\'ll be ${owed} by the way.')
     t.sleep(2)
