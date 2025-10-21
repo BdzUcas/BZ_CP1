@@ -1,11 +1,10 @@
 import time as t
 import random as r
 import useful_functions as u
-input_stocks = ['stocks','invest','1']
-input_sell_stocks = ['sell stocks','sell','3']
-input_pass = ['skip','pass','4']
-input_loan = ['free money','free','2','loan','money','moneys']
-
+input_stocks = ['stocks','invest','1','stock','buy','buy stocks','purchase','purchase stocks','invest money']
+input_sell_stocks = ['sell stocks','sell','3','make money']
+input_loan = ['free money','free','2','loan','money','moneys','loans','loan money','bank loan']
+input_end = ['end','terminate','exit','6','done','lose','win','die']
 print('Hello.')
 t.sleep(1.5)
 print('Welcome to ....')
@@ -60,7 +59,7 @@ while True:
                 owed = 0
                 print(f'You now have ${money}.')
         t.sleep(1)
-    activity = input('1. "Stocks!" \n2. "Free money!"\n3. Sell Stocks \n4. Pass\n5. End\n').lower().strip()
+    activity = input('1. Stocks \n2. "Free money"\n3. Sell Stocks \n4. Pass\n5. Lottery\n6. End\n').lower().strip()
     if activity in input_stocks:
         print('Welcome to the stock market!')
         t.sleep(2)
@@ -96,9 +95,6 @@ while True:
             print(f'You sold {sell_stocks} for ${sell_stocks * stock_cost}!')
             money += sell_stocks * stock_cost
             stocks -= sell_stocks
-    elif activity in input_pass:
-        print('You passed this turn.')
-        pass
     elif activity in input_loan:
         print('You need some money, ay?')
         t.sleep(2)
@@ -118,4 +114,20 @@ while True:
             owed = loan * 1.5
             t.sleep(3)
             print(f'That\'ll be ${owed} by the way.')
+    elif activity in input_end:
+        score = money - 100
+        print(f'Thanks for investing! Your score was {score}.')
+        if score < 0:
+            print("You lost money! That's sad. Sad for you.")
+        elif score == 0:
+            print("You broke even! Try harder next time.")
+        elif score > 0 and score <= 100:
+            print("At least it's better than 0!")
+        elif score > 100 and score < 1000:
+            print("Nice job!")
+        elif score >= 1000:
+            print("Wow!")
+        break
+    else:
+        print('You passed this turn.')
     t.sleep(2)
