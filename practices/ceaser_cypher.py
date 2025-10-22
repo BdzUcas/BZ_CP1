@@ -2,7 +2,8 @@
 #Define possible inputs
 input_encode = ['encode','1','code']
 input_decode = ['decode','2','uncode']
-input_end = ['end','terminate','exit','3','done','lose','win','die']
+input_force_decode = ['brute force decode','3','force decode','force']
+input_end = ['end','terminate','exit','4','done','lose','win','die']
 #Define encode function
 def encode(text,key):
     #Define empty encoding string
@@ -35,6 +36,7 @@ def encode(text,key):
         encoded += encoded_char
     #return encoded string
     return encoded
+#define decode function
 def decode(text,key):
    #Define empty decoding string
     decoded = ''
@@ -70,4 +72,66 @@ def decode(text,key):
 while not False:
     #loop forever
     while not False:
-        op = input('Encode, Decode, or Exit?')
+        #have user input whether they want to encode, decode, brute force decode, or exit
+        op = input('1. Encode, 2. Decode, 3. Force Decode, or 4. Exit?\n')
+        #check if input is in valid encode inputs
+        if op in input_encode:
+            #have the user input something to encode
+            uncoded = input('What would you like to encode?\n')
+            #forever
+            while not False:
+                #have the user input the key
+                key = input('What key would you like to use?\n')
+                #if the key is a number
+                if key.isdigit():
+                    #convert the input to an integer
+                    key = int(key)
+                    #exit the loop
+                    break
+                #otherwise
+                else:
+                    #tell the user to input a number
+                    print('Please input a number!')
+            #run encode function
+            coded = encode(uncoded,key)
+            #display output
+            print(coded)
+        #else, check if input is in valid decode inputs
+        elif op in input_decode:
+            #have the user input something to decode
+            uncoded = input('What would you like to decode?\n')
+            #forever
+            while not False:
+                #have the user input the key
+                key = input('What is the key?\n')
+                #if the key is a number
+                if key.isdigit():
+                    #convert the input to an integer
+                    key = int(key)
+                    #exit the loop
+                    break
+                #otherwise
+                else:
+                    #tell the user to input a number
+                    print('Please input a number!')
+            #run decode function
+            coded = decode(uncoded,key)
+            #display output
+            print(coded)
+        #else, check if input is in valid force decode inputs
+        elif op in input_force_decode:
+            #have the user input something to decode
+            uncoded = input('What would you like to decode?\n')
+            for key in range(1,26):
+                print(decode(uncoded,key))
+        #else, check if input is in valid end inputs
+        elif op in input_end:
+            #thank the user
+            print('Thanks for using this program!')
+            #exit the loop
+            break
+        #otherwise
+        else:
+            #tell the user to input a valid input
+            print('Please use a valid input!')
+
