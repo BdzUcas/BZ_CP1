@@ -5,6 +5,7 @@ input_stocks = ['stocks','invest','1','stock','buy','buy stocks','purchase','pur
 input_sell_stocks = ['sell stocks','sell','3','make money']
 input_loan = ['free money','free','2','loan','money','moneys','loans','loan money','bank loan']
 input_end = ['end','terminate','exit','6','done','lose','win','die']
+input_lottery = ['5','lottery']
 print('Hello.')
 t.sleep(1.5)
 print('Welcome to ....')
@@ -32,6 +33,7 @@ stock_change = 0
 loan = 0
 loan_turns = 0
 owed = 0
+lottery = 0
 while True:
     print(f'Turn {turn}. You have ${money}, and {stocks} stocks.')
     t.sleep(1)
@@ -128,6 +130,22 @@ while True:
         elif score >= 1000:
             print("Wow!")
         break
+    elif activity in input_lottery:
+        print('Welcome to the lottery!')
+        t.sleep(1)
+        print('Here you can buy lottery tickets')
+        t.sleep(1)
+        print('Each ticket has a chance to get you LOTS of money.')
+        t.sleep(1)
+        tickets = u.int_input('How many tickets would you like to buy? They are each $1.\n','That\'s not a number, now is it?')
+        if tickets == 0:
+            print('No tickets? Okay then.')
+        elif tickets > money:
+            print('You can\'t afford that many tickets.')
+        else:
+            money -= tickets
+            lottery += tickets
+            print('Thank you for buying tickets!')
     else:
         print('You passed this turn.')
     t.sleep(2)
