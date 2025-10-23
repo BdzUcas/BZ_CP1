@@ -34,6 +34,7 @@ loan = 0
 loan_turns = 0
 owed = 0
 lottery = 0
+lottery_value = 10000
 while True:
     print(f'Turn {turn}. You have ${money}, and {stocks} stocks.')
     t.sleep(1)
@@ -61,6 +62,17 @@ while True:
                 owed = 0
                 print(f'You now have ${money}.')
         t.sleep(1)
+    if lottery > 0:
+        print('The lottery is running!')
+        t.sleep(1)
+        lottery_value += r.randint(-1500,2000)
+        print(f'You have {lottery} tickets.')
+        t.sleep(1)
+        if r.randint(1,lottery_value) <= lottery:
+            print(f'You won! You get ${lottery_value}')
+        else:
+            print('You didn\'t win. Too bad!')
+        lottery = 0
     activity = input('1. Stocks \n2. "Free money"\n3. Sell Stocks \n4. Pass\n5. Lottery\n6. End\n').lower().strip()
     if activity in input_stocks:
         print('Welcome to the stock market!')
@@ -149,3 +161,4 @@ while True:
     else:
         print('You passed this turn.')
     t.sleep(2)
+    turn += 1
