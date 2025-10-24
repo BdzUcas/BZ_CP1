@@ -13,39 +13,90 @@ attack_message_2 = ['punches at you','chants in an eldritch language','stabs at 
 first_word_choice = r.randint(0,len(first_word)-1)
 second_word_choice = r.randint(0,len(second_word)-1)
 opponent = first_word[first_word_choice] + second_word[second_word_choice]
-#Define dodge/miss/hit messages
+#Define dodge/miss/hit/crit/heal messages
 dodges = ['You dodge elegantly.','You dodge, sort of','You bravely defend yourself against the attack!','You try to dodge.','You leap backward in fright','You steel yourself for an attack','You hide - bravely of course','You dodge out of the way of the attack','You run away at full speed','You scream in terror', 'You defend yourself against the incoming attack.']
 misses = ['You *almost* hit','You miss!','Your attack misses.','You impressively flourish your blade- oh, oh wow that looks very painful','Your attack misses horribly',"You plunge your blade directly into- that's a tree. Seriously, that's a tree.",'You miss','You miss!','You yell a battle cry! It does nothing.','Nothing happened',f'The {opponent} blocks your attack.','Your attack hits the ground.',f'Whoops, you accidently attacked something else instead. You deal {r.randint(1,10)} damage to the {r.choice(first_word)}{r.choice(second_word)}!']
 hits = ['Your attack hits!','Wow! Awesome hit!','Oof- that looks painful.','Your hit lands, sort of.',f'You strike the {opponent} down.']
 enemy_hits = ['It hits!','And lands an impressive hit!','Oof- that looks painful.','And it works, sort of.','And it hits perfectly.','And hit!',"Oof- that's a lot of damage.",'and hit!','and lands an impressive attack.',"and it hits, but it wasn't very impressive."]
+crits = ['Critical Hit!','CRIT!','SMASH!','BAM!','KAPOW!']
+heals = ['You drink a healing potion.','You grit your teeth and try again.','You feel rejuvenated.']
 #Define possible inputs
 input_fighter = ['1','fighter','barbarian','smash']
 input_tank = ['2','tank','protector','cleric']
 input_rouge = ['3','rougue','rouge','roug','roge','rogue','theif','assassin']
 input_yes = ['yes','y','yep','yes please','yess','ye']
+input_1 = ['attack','kill','offense','1']
+input_2 = ['sheild','defense','dodge','shield','2']
+input_3 = ['heal','3','potion','hael']
+input_4 = ['4','Flurry Attack','Hyper Defense','Sneak Attack']
 #Define turn functions
 def player_turn():
-    print()
+    if class_input in input_fighter:
+        print('What would you like to do?\n1. Attack\n2. Shield\n 3. Heal\n 4. Flurry Attack')
+    elif class_input in input_tank:
+        print('What would you like to do?\n1. Attack\n2. Shield\n 3. Heal\n 4. Hyper Defense')
+    elif class_input in input_rouge:
+        print('What would you like to do?\n1. Attack\n2. Dodge\n 3. Heal\n 4. Sneak Attack')
+    while not False:
+        action = input()
+        if action in input_1:
+            roll = r.randint(1,20)
+            t.sleep(1)
+            if roll == 20:
+                print(r.choice(crits))
+            elif roll + attack > monster_defense:
+                damage = r.randint(1,8) + attack
+                print(r.choice(hits))
+                t.sleep(1)
+                print(f'You deal {damage} damage to the {opponent}!')
+                return 1, damage
+            else:
+                print(r.choice(misses))
+                return 1, 0
+        elif action in input_2:
+            print(r.choice(dodges))
+            return 2, 0
+        elif action in input_3:
+            print(r.choice(heals))
+            t.sleep(1)
+            heal = r.randint(3,8)
+            print(f'You heal {heal} hp!')
+            return 3, heal
+        elif action in input_4:
+            if class_input in input_fighter:
+                for i in range(1,12):
+                    roll = r.randint(1,20)
+                    print(r.choice(crits))
+
+                print(f'You deal {damage} damage!')
+
+        else:
+            print('Please use a valid input!')
 #Introduce program
 print('Welcome challenger!')
 t.sleep(1)
 #Get user stats
 name = input('Enter your name: ').strip()
-class_input = input('Enter your Class:\n1. Fighter\n2. Tank\n3. Rougue\n').lower().strip()
-t.sleep(1)
-if class_input in input_fighter:
-    attack = r.randint(3,6)
-    defense = 19 - attack
-    hp = 20
-elif class_input in input_tank:
-    attack = r.randint(1,3)
-    defense = 21 - attack
-    hp = 30
-elif class_input in input_rouge:
-    attack = r.randint(4,8)
-    defense = 16 - attack
-    hp = 15
-#i need an else here!
+while not False:
+    class_input = input('Enter your Class:\n1. Fighter\n2. Tank\n3. Rougue\n').lower().strip()
+    if class_input in input_fighter:
+        attack = r.randint(3,6)
+        defense = 19 - attack
+        hp = 20
+        break
+    elif class_input in input_tank:
+        attack = r.randint(1,3)
+        defense = 21 - attack
+        hp = 30
+        break
+    elif class_input in input_rouge:
+        attack = r.randint(4,8)
+        defense = 16 - attack
+        hp = 15
+        break
+    else:
+        print('Please enter a valid class!')
+    t.sleep(1)
 print(f'Stats:\n\033[31m### {name} ###\033[0m\nAttack: +{attack}\nDefense: {defense}\nHealth: {hp}')
 t.sleep(3)
 #Get monster stats
@@ -75,7 +126,9 @@ print('Let\'s begin!')
 p_initiative = r.randint(1,20)
 m_initiative = r.randint(1,20)
 if class_input in input_rouge:
-    p_initiative += 1
+    p_initiative += 2
+elif class_input in input_tank:
+    p_initiative -= 2
 if p_initiative > m_initiative:
     print(f'{name} goes first!')
     while not False:
