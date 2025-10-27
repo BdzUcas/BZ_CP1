@@ -29,14 +29,15 @@ input_1 = ['attack','kill','offense','1']
 input_2 = ['sheild','defense','dodge','shield','2']
 input_3 = ['heal','3','potion','hael']
 input_4 = ['4','Flurry Attack','Hyper Defense','Sneak Attack']
+choice = 0
 #Define turn functions
 def player_turn():
     if class_input in input_fighter:
-        print('What would you like to do?\n1. Attack\n2. Shield\n 3. Heal\n 4. Flurry Attack')
+        print('What would you like to do?\n1. Attack\n2. Shield\n3. Heal\n4. Flurry Attack')
     elif class_input in input_tank:
-        print('What would you like to do?\n1. Attack\n2. Shield\n 3. Heal\n 4. Hyper Defense')
+        print('What would you like to do?\n1. Attack\n2. Shield\n3. Heal\n4. Hyper Defense')
     elif class_input in input_rouge:
-        print('What would you like to do?\n1. Attack\n2. Dodge\n 3. Heal\n 4. Sneak Attack')
+        print('What would you like to do?\n1. Attack\n2. Dodge\n3. Heal\n4. Sneak Attack')
     while not False:
         action = input()
         if action in input_1:
@@ -44,6 +45,10 @@ def player_turn():
             t.sleep(1)
             if roll == 20:
                 print(r.choice(crits))
+                damage = r.randint(1,8) + attack
+                damage *= 2
+                print(f'You deal {damage} damage to the {opponent}!')
+                return 1, damage
             elif roll + attack > monster_defense:
                 damage = r.randint(1,8) + attack
                 print(r.choice(hits))
@@ -63,15 +68,64 @@ def player_turn():
             print(f'You heal {heal} hp!')
             return 3, heal
         elif action in input_4:
-            if class_input in input_fighter:
-                for i in range(1,12):
+            if stamina < 1:
+                print('You are out of special actions!')
+            else:
+                if class_input in input_fighter:
+                    flurry_damage = 0
+                    for i in range(1,7):
+                        roll = r.randint(1,20)
+                        if roll == 20 or roll == 19:
+                            print(r.choice(crits))
+                            flurry_damage += attack * 2
+                        elif roll + attack > monster_defense:
+                            flurry_damage += attack
+                        t.sleep(0.1)
+                    print(f'You deal {flurry_damage} damage from 6 attacks!')
+                    return 4, flurry_damage
+                elif class_input in input_tank:
+                    print('You will take no damage this round!')
+                    return 4, 0
+                elif class_input in input_rouge:
                     roll = r.randint(1,20)
-                    print(r.choice(crits))
-
-                print(f'You deal {damage} damage!')
+                    if roll == 20:
+                        print(r.choice(crits))
+                        damage = r.randint(1,8) + attack * 3
+                        damage *= 2
+                        print(f'You deal {damage} damage to the {opponent}!')
+                    else:
+                        damage = r.randint(1,8) + attack * 3
+                        print(f'You deal {damage} damage to the {opponent}!')
+                    return 4, damage
 
         else:
             print('Please use a valid input!')
+def monster_turn():
+    if r.randint(1,2) == 1:
+        print(f'{opponent} {attack_message_1[first_word_choice]}...')
+    else:
+        print(f'{opponent} {attack_message_2[second_word_choice]}...')
+    t.sleep(1)
+    if choice == 4 and class_input in input_tank:
+        print('But your impenetrable defenses block it!')
+    else:
+        if choice == 2:
+            roll = min(r.randint(1,20),r.randint(1,20))
+        else:
+            roll = r.randint(1,20)
+        if roll + monster_attack > defense:
+            print(r.choice(enemy_hits))
+            damage = r.randint(1,8) + monster_attack
+            print(f'You take {damage} damage!')
+            return damage
+        else:
+            if r.randint(1,2) == 1:
+                print(miss_message_1[first_word_choice])
+            else:
+                print(miss_message_2[second_word_choice])
+            return 0
+        
+
 #Introduce program
 print('Welcome challenger!')
 t.sleep(1)
@@ -97,6 +151,7 @@ while not False:
     else:
         print('Please enter a valid class!')
     t.sleep(1)
+stamina = 3
 print(f'Stats:\n\033[31m### {name} ###\033[0m\nAttack: +{attack}\nDefense: {defense}\nHealth: {hp}')
 t.sleep(3)
 #Get monster stats
@@ -104,7 +159,7 @@ print('Meet your opponent:')
 t.sleep(1)
 monster_attack = r.randint(1,8)
 monster_defense = r.randint(16,20) - monster_attack
-monster_hp = r.randint(15,30)
+monster_hp = r.randint(20,50)
 print(f'\033[31m{opponent}!\033[0m')
 t.sleep(1)
 print(f'Attack: +{monster_attack}\nDefense: {monster_defense}\nHealth: {hp}')
@@ -131,9 +186,49 @@ elif class_input in input_tank:
     p_initiative -= 2
 if p_initiative > m_initiative:
     print(f'{name} goes first!')
+    t.sleep(1)
     while not False:
-        break
+        choice, value = player_turn()
+        t.sleep(1)
+        if choice == 1:
+            monster_hp -= value
+        elif choice == 2:
+            pass
+        elif choice == 3:
+            hp += value
+        elif choice == 4:
+            if class_input in input_fighter:
+                monster_hp -= value
+            elif class_input in input_tank:
+                pass
+            elif class_input in input_rouge:
+                monster_hp -= value
+            t.sleep(1)
+            stamina -= 1
+            print(f'You have {stamina} special actions left!')
+        print(f'{opponent} has {monster_hp} health left!')
+        hp -= monster_turn()
+        print(f'You have {hp} health left!')
 else:
     print(f'{opponent} goes first!')
+    t.sleep(1)
     while not False:
-        break
+        hp -= monster_turn()
+        choice, value = player_turn()
+        t.sleep(1)
+        if choice == 1:
+            monster_hp -= value
+        elif choice == 2:
+            pass
+        elif choice == 3:
+            hp += value
+        elif choice == 4:
+            if class_input in input_fighter:
+                monster_hp -= value
+            elif class_input in input_tank:
+                pass
+            elif class_input in input_rouge:
+                monster_hp -= value
+            t.sleep(1)
+            stamina -= 1
+            print(f'You have {stamina} special actions left!')
