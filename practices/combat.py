@@ -18,7 +18,7 @@ dodges = ['You dodge elegantly.','You dodge, sort of','You bravely defend yourse
 misses = ['You *almost* hit','You miss!','Your attack misses.','You impressively flourish your blade- oh, oh wow that looks very painful','Your attack misses horribly',"You plunge your blade directly into- that's a tree. Seriously, that's a tree.",'You miss','You miss!','You yell a battle cry! It does nothing.','Nothing happened',f'The {opponent} blocks your attack.','Your attack hits the ground.',f'Whoops, you accidently attacked something else instead. You deal {r.randint(1,10)} damage to the {r.choice(first_word)}{r.choice(second_word)}!']
 hits = ['Your attack hits!','Wow! Awesome hit!','Oof- that looks painful.','Your hit lands, sort of.',f'You strike the {opponent} down.']
 enemy_hits = ['It hits!','And lands an impressive hit!','Oof- that looks painful.','And it works, sort of.','And it hits perfectly.','And hit!',"Oof- that's a lot of damage.",'and hit!','and lands an impressive attack.',"and it hits, but it wasn't very impressive."]
-crits = ['Critical Hit!','CRIT!','SMASH!','BAM!','KAPOW!']
+crits = ['Critical Hit!','CRIT!','SMASH!','BAM!','KAPOW!','BANG!']
 heals = ['You drink a healing potion.','You grit your teeth and try again.','You feel rejuvenated.']
 #Define possible inputs
 input_fighter = ['1','fighter','barbarian','smash']
