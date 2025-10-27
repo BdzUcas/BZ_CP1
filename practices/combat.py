@@ -78,7 +78,7 @@ def player_turn():
                         if roll == 20 or roll == 19:
                             print(r.choice(crits))
                             flurry_damage += attack * 2
-                        elif roll + attack > monster_defense:
+                        elif roll > monster_defense:
                             flurry_damage += attack
                         t.sleep(0.1)
                     print(f'You deal {flurry_damage} damage from 6 attacks!')
@@ -90,11 +90,11 @@ def player_turn():
                     roll = r.randint(1,20)
                     if roll == 20:
                         print(r.choice(crits))
-                        damage = r.randint(1,8) + attack * 3
+                        damage = r.randint(1,8) + attack * 2
                         damage *= 2
                         print(f'You deal {damage} damage to the {opponent}!')
                     else:
-                        damage = r.randint(1,8) + attack * 3
+                        damage = r.randint(1,8) + attack * 2
                         print(f'You deal {damage} damage to the {opponent}!')
                     return 4, damage
 
@@ -124,7 +124,7 @@ def monster_turn():
             else:
                 print(miss_message_2[second_word_choice])
             return 0
-        
+    return 0
 
 #Introduce program
 print('Welcome challenger!')
@@ -162,7 +162,7 @@ monster_defense = r.randint(16,20) - monster_attack
 monster_hp = r.randint(20,50)
 print(f'\033[31m{opponent}!\033[0m')
 t.sleep(1)
-print(f'Attack: +{monster_attack}\nDefense: {monster_defense}\nHealth: {hp}')
+print(f'Attack: +{monster_attack}\nDefense: {monster_defense}\nHealth: {monster_hp}')
 t.sleep(3)
 #Explain Combat
 if input('Instructions? y/n: ').strip().lower() in input_yes:
@@ -176,6 +176,26 @@ if input('Instructions? y/n: ').strip().lower() in input_yes:
     t.sleep(1)
     print('If your health reaches 0, the monster wins.')
     t.sleep(1)
+    print('You can take 3 special actions.')
+    t.sleep(1)
+    if class_input in input_tank:
+        print('Your special action is hyper defense!')
+        t.sleep(1)
+        print('It makes you invulnerable for 1 round.')
+    elif class_input in input_fighter:
+        print('Your special action is flurry attack!')
+        t.sleep(1)
+        print('It lets you make a series of slightly less effective attacks.')
+        t.sleep(1)
+        print('It is good against enemies with low defense.')
+    elif class_input in input_rouge:
+        print('You special action is sneak attack!')
+        t.sleep(1)
+        print('It lets you make a single attack that is garunteed to hit and doubles your attack modifier!')
+        t.sleep(1)
+        print('It is good against enemies with high defense.')
+    t.sleep(1)
+
 print('Let\'s begin!')
 #decide who goes first
 p_initiative = r.randint(1,20)
@@ -206,14 +226,33 @@ if p_initiative > m_initiative:
             t.sleep(1)
             stamina -= 1
             print(f'You have {stamina} special actions left!')
-        print(f'{opponent} has {monster_hp} health left!')
+        if monster_hp < 1:
+            print(f'{name} wins!')
+            break
+        else:
+            print(f'{opponent} has {monster_hp} health remaining!')
+        t.sleep(1)
         hp -= monster_turn()
-        print(f'You have {hp} health left!')
+        t.sleep(1)
+        if hp < 1:
+            print(f'{opponent} wins!')
+            break
+        else:
+            print(f'You have {hp} health remaining!')
+        t.sleep(1)
+        
 else:
     print(f'{opponent} goes first!')
     t.sleep(1)
     while not False:
         hp -= monster_turn()
+        t.sleep(1)
+        if hp < 1:
+            print(f'{opponent} wins!')
+            break
+        else:
+            print(f'You have {hp} health remaining!')
+        t.sleep(1)
         choice, value = player_turn()
         t.sleep(1)
         if choice == 1:
@@ -232,3 +271,9 @@ else:
             t.sleep(1)
             stamina -= 1
             print(f'You have {stamina} special actions left!')
+        if monster_hp < 1:
+            print(f'{name} wins!')
+            break
+        else:
+            print(f'{opponent} has {monster_hp} health remaining!')
+        t.sleep(1)
