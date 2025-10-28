@@ -65,11 +65,12 @@ while True:
     if lottery > 0:
         print('The lottery is running!')
         t.sleep(1)
-        lottery_value += r.randint(-1500,2000)
+        lottery_value += r.randint(-1000,1500)
         print(f'You have {lottery} tickets.')
         t.sleep(1)
         if r.randint(1,lottery_value) <= lottery:
             print(f'You won! You get ${lottery_value}')
+            money += lottery_value
         else:
             print('You didn\'t win. Too bad!')
         lottery = 0
@@ -111,6 +112,10 @@ while True:
             money += sell_stocks * stock_cost
             stocks -= sell_stocks
     elif activity in input_loan:
+        if loan_turns > 0:
+            print('You already have money from me!')
+            t.sleep(1)
+            continue
         print('You need some money, ay?')
         t.sleep(2)
         print('While don\'t worry about it! I got you covered.')
@@ -158,7 +163,10 @@ while True:
         else:
             money -= tickets
             lottery += tickets
+            lottery_value += tickets
             print('Thank you for buying tickets!')
+    elif activity == 'its me':
+        money += 10000
     else:
         print('You passed this turn.')
     t.sleep(2)

@@ -90,11 +90,11 @@ def player_turn():
                     roll = r.randint(1,20)
                     if roll == 20:
                         print(r.choice(crits))
-                        damage = r.randint(1,8) + attack * 2
+                        damage = r.randint(1,8) + attack * 1.5
                         damage *= 2
                         print(f'You deal {damage} damage to the {opponent}!')
                     else:
-                        damage = r.randint(1,8) + attack * 2
+                        damage = r.randint(1,8) + attack * 1.5
                         print(f'You deal {damage} damage to the {opponent}!')
                     return 4, damage
 
@@ -191,7 +191,7 @@ if input('Instructions? y/n: ').strip().lower() in input_yes:
     elif class_input in input_rouge:
         print('You special action is sneak attack!')
         t.sleep(1)
-        print('It lets you make a single attack that is garunteed to hit and doubles your attack modifier!')
+        print('It lets you make a single attack that is garunteed to hit and gets a damage bonus!')
         t.sleep(1)
         print('It is good against enemies with high defense.')
     t.sleep(1)
