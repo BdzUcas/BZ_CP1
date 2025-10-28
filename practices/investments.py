@@ -73,6 +73,7 @@ while True:
         else:
             print('You didn\'t win. Too bad!')
         lottery = 0
+    t.sleep(1)
     activity = input('1. Stocks \n2. "Free money"\n3. Sell Stocks \n4. Pass\n5. Lottery\n6. End\n').lower().strip()
     if activity in input_stocks:
         print('Welcome to the stock market!')
