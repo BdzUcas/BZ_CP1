@@ -46,9 +46,13 @@ while True:
     print(f'Turn {turn}. You have ${money}, and {stocks} stocks.')
     t.sleep(1)
     if stocks > 0:
-        stock_change = r.randint(-2,2)
         if stock_cost + stock_change < 1:
             stock_change = r.randint(1,2)
+        elif stock_cost + stock_change > 15:
+            stock_change = r.randint(-2,1)
+        else:
+            stock_change = r.randint(-2,2)
+
         stock_cost += stock_change
         print(f'The stock value is now {stock_cost}! It changed by {stock_change}.')
         t.sleep(1)
@@ -75,7 +79,12 @@ while True:
         lottery_value += r.randint(-1000,1500)
         print(f'You have {lottery} tickets.')
         t.sleep(1)
-        if r.randint(1,lottery_value) <= lottery:
+        lottery_win = r.randint(1,lottery_value)
+        print('The winning number is...')
+        t.sleep(3)
+        print(str(lottery_win) + '!')
+        t.sleep(1)
+        if lottery_win <= lottery:
             print(f'You won! You get ${lottery_value}')
             money += lottery_value
         else:
@@ -124,13 +133,13 @@ while True:
             t.sleep(1)
             continue
         print('You need some money, egh?')
-        t.sleep(2)
+        t.sleep(1)
         print('While don\'t worry about it! I got you covered.')
-        t.sleep(2)
+        t.sleep(1)
         print('I\'ll give you some right now if you\'ll pay it back later.')
-        t.sleep(2)
+        t.sleep(1)
         print('With interest, of course.')
-        t.sleep(1.5)
+        t.sleep(1)
         loan = u.int_input('So, what\'ll it be?\n','That\'s not a number, now is it?')
         if loan == 0:
             print('No money? Okay then.')
