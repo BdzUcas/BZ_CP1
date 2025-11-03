@@ -5,6 +5,30 @@ import random as r
 maze = []
 #create size variable
 size = 10
+#create function for neighbors choice
+def find_neighbors(stack, x, y):
+    neighbors = []
+    while not neighbors:
+        #create a list of all neighbor cells
+        neighbors = [[x,y+1],[x-1,y],[x+1,y],[x,y-1]]
+        loop_neighbors = [[x,y+1],[x-1,y],[x+1,y],[x,y-1]]
+        #remove items that match an item in the visited list OR contain coords outside of the maze
+        for i in loop_neighbors:
+            if i in visited:
+                neighbors.remove(i)
+            elif i[0] < 0 or i[1] < 0:
+                neighbors.remove(i)
+            elif i[0] >= size or i[1] >= size:
+                neighbors.remove(i)
+        #if there are no neighbors left
+        if not neighbors:
+            #set x and y to top coords of stack, remove top stack item
+            if stack:
+                x, y = stack.pop()
+            else:
+                return False, stack
+        return neighbors, stack
+    
 #loop through y coordinates of the maze
 for y in range(0,size):
     #empty row list
@@ -28,28 +52,11 @@ while len(visited) < size ** 2:
     #add current x and y coordinate to the visited list and a "stack" list
     visited.append([x,y])
     stack.append([x,y])
-    #loop until we find a cell with neighbors
-    neighbors = []
-    while not neighbors:
-        #create a list of all neighbor cells
-        neighbors = [[x,y+1],[x-1,y],[x+1,y],[x,y-1]]
-        loop_neighbors = [[x,y+1],[x-1,y],[x+1,y],[x,y-1]]
-        #remove items that match an item in the visited list OR contain coords outside of the maze
-        for i in loop_neighbors:
-            print(f'neighbor! {i}')
-            if i in visited:
-                neighbors.remove(i)
-            elif i[0] < 0 or i[1] < 0:
-                neighbors.remove(i)
-            elif i[0] >= size or i[1] >= size:
-                neighbors.remove(i)
-        #if there are no neighbors left
-        if not neighbors:
-            #set x and y to top coords of stack, remove top stack item
-            x, y = stack.pop()
-            
+    #find neighbors
+    neighbors, stack = find_neighbors(stack,x,y)
     #pick a random item from the neighbors list
-    neighbor = r.choice(neighbors)
+    if neighbors:
+        neighbor = r.choice(neighbors)
     
     #remove wall between current cell and chosen neighbor cell
     if neighbor[0] == x - 1:
@@ -65,10 +72,10 @@ while len(visited) < size ** 2:
         elif neighbor[1] == y+1:
             neighbor_remove = 2
             self_remove = 0
-    print(neighbor[0])
-    print(neighbor[1])
     maze[neighbor[0]][neighbor[1]][neighbor_remove] = 0
     maze[y][x][self_remove] = 0
     #set x and y coordinate to that of the chosen neighbor
     x,y = neighbor
-print(visited)
+
+print(maze)
+print(len(visited))
