@@ -24,11 +24,12 @@ heals = ['You drink a healing potion.','You grit your teeth and try again.','You
 input_fighter = ['1','fighter','barbarian','smash']
 input_tank = ['2','tank','protector','cleric']
 input_rouge = ['3','rougue','rouge','roug','roge','rogue','theif','assassin']
+input_wizard = ['4','wizard','spellcaster','warlock','sorcerer','cleric']
 input_yes = ['yes','y','yep','yes please','yess','ye']
 input_1 = ['attack','kill','offense','1']
 input_2 = ['sheild','defense','dodge','shield','2']
 input_3 = ['heal','3','potion','hael']
-input_4 = ['4','Flurry Attack','Hyper Defense','Sneak Attack']
+input_4 = ['4','flurry attack','hyper defense','sneak attack','paralyze']
 choice = 0
 #Define turn functions
 def player_turn():
@@ -38,6 +39,9 @@ def player_turn():
         print('What would you like to do?\n1. Attack\n2. Shield\n3. Heal\n4. Hyper Defense')
     elif class_input in input_rouge:
         print('What would you like to do?\n1. Attack\n2. Dodge\n3. Heal\n4. Sneak Attack')
+    elif class_input in input_wizard:
+        print('What would you like to do?\n1. Attack\n2. Dodge\n3. Heal\n4. Paralyze')
+
     while not False:
         action = input()
         if action in input_1:
@@ -65,6 +69,8 @@ def player_turn():
             print(r.choice(heals))
             t.sleep(1)
             heal = r.randint(3,8)
+            if class_input in input_wizard:
+                heal += 2
             print(f'You heal {heal} hp!')
             return 3, heal
         elif action in input_4:
@@ -97,10 +103,15 @@ def player_turn():
                         damage = r.randint(1,8) + attack * 1.5
                         print(f'You deal {damage} damage to the {opponent}!')
                     return 4, damage
-
+                elif class_input in input_wizard:
+                    print(f'You paralyze {opponent}!')
+                    return 4, 0
         else:
             print('Please use a valid input!')
 def monster_turn():
+    if choice == 4 and class_input in input_wizard:
+        print(f'{opponent} is paralyzed!')
+        return 0
     if r.randint(1,2) == 1:
         print(f'{opponent} {attack_message_1[first_word_choice]}...')
     else:
@@ -116,6 +127,8 @@ def monster_turn():
         if roll + monster_attack > defense:
             print(r.choice(enemy_hits))
             damage = r.randint(1,8) + monster_attack
+            if class_input in input_tank:
+                damage -= 1
             print(f'You take {damage} damage!')
             return damage
         else:
@@ -132,7 +145,7 @@ t.sleep(1)
 #Get user stats
 name = input('Enter your name: ').strip()
 while not False:
-    class_input = input('Enter your Class:\n1. Fighter\n2. Tank\n3. Rougue\n').lower().strip()
+    class_input = input('Enter your Class:\n1. Fighter\n2. Tank\n3. Rougue\n4. Wizard\n').lower().strip()
     if class_input in input_fighter:
         attack = r.randint(3,6)
         defense = 19 - attack
@@ -147,6 +160,11 @@ while not False:
         attack = r.randint(4,8)
         defense = 16 - attack
         hp = 15
+        break
+    elif class_input in input_wizard:
+        attack = r.randint(2,5)
+        defense = 14 - attack
+        hp = 20
         break
     else:
         print('Please enter a valid class!')
@@ -194,6 +212,12 @@ if input('Instructions? y/n: ').strip().lower() in input_yes:
         print('It lets you make a single attack that is garunteed to hit and gets a damage bonus!')
         t.sleep(1)
         print('It is good against enemies with high defense.')
+    elif class_input in input_wizard:
+        print('Your special action is paralyze!')
+        t.sleep(1)
+        print('It prevents the enemy from doing anything!')
+        t.sleep(1)
+        print('It is useful when fighting on a team.')
     t.sleep(1)
 
 print('Let\'s begin!')
