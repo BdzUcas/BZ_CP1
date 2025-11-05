@@ -5,32 +5,23 @@ import turtle as t
 #create empty maze list
 maze = []
 #create size variable
-size = 10
+size = 15
 #create function for neighbors choice
-def find_neighbors(stack, x, y):
+def find_neighbors(x, y):
     neighbors = []
-    while not neighbors:
-        #create a list of all neighbor cells
-        neighbors = [[x,y+1],[x-1,y],[x+1,y],[x,y-1]]
-        loop_neighbors = [[x,y+1],[x-1,y],[x+1,y],[x,y-1]]
-        #remove items that match an item in the visited list OR contain coords outside of the maze
-        for i in loop_neighbors:
-            if i in visited:
-                neighbors.remove(i)
-            elif i[0] < 0 or i[1] < 0:
-                neighbors.remove(i)
-            elif i[0] >= size or i[1] >= size:
-                neighbors.remove(i)
-        #if there are no neighbors left
-        if not neighbors:
-            #set x and y to top coords of stack, remove top stack item
-            if stack:
-                x, y = stack.pop()
-                
-            else:
-                return False, stack
-        else:
-            return neighbors, stack
+    #create a list of all neighbor cells
+    neighbors = [[x,y+1],[x-1,y],[x+1,y],[x,y-1]]
+    loop_neighbors = [[x,y+1],[x-1,y],[x+1,y],[x,y-1]]
+    #remove items that match an item in the visited list OR contain coords outside of the maze
+    for i in loop_neighbors:
+        if i in visited:
+            neighbors.remove(i)
+        elif i[0] < 0 or i[1] < 0:
+            neighbors.remove(i)
+        elif i[0] >= size or i[1] >= size:
+            neighbors.remove(i)
+    #return neighbors
+    return neighbors
     
 #loop through y coordinates of the maze
 for y in range(0,size):
@@ -42,6 +33,7 @@ for y in range(0,size):
         row.append([1,1,1,1])
     #add row list to maze list
     maze.append(row)
+maze[size-1][0][0] = 0
 #set x and y starting coords
 x, y = 0, 0
 #create an empty "visited" list
@@ -49,18 +41,36 @@ visited = []
 #create an empty "stack" list
 stack = []
 #loop until visited list contains all cells
+exit = False
 while len(visited) < size ** 2:
     #add current x and y coordinate to the visited list and a "stack" list
     visited.append([x,y])
+    neighbors = []
+    #loop while we have no neighbors
+    while not neighbors:
+        #find neighbors
+        neighbors = find_neighbors(x,y)
+        #if there are neighbors
+        if neighbors:
+            #pick a random neighbor
+            neighbor = r.choice(neighbors)
+            #exit loop
+            break
+        #if there are no neighbors
+        else:
+            #if there are items in the stack
+            if stack:
+                #remove top item from stack and update our x and y coords to it
+                x, y = stack.pop()
+            else:
+                #exit main loop
+                exit = True
+                break
+    if exit:
+        break
     
-    #find neighbors
-    neighbors, stack = find_neighbors(stack,x,y)
-    #pick a random item from the neighbors list
-    if neighbors:
-        neighbor = r.choice(neighbors)
     stack.append(neighbor)
     print(neighbor)
-    
     #remove wall between current cell and chosen neighbor cell
     if neighbor[0] == x - 1:
         neighbor_remove = 1
@@ -79,6 +89,7 @@ while len(visited) < size ** 2:
     maze[y][x][self_remove] = 0
     #set x and y coordinate to that of the chosen neighbor
     x,y = neighbor
+t.hideturtle()
 t.penup()
 t.speed(0)
 t.goto(-10 * size,10 * size)
@@ -90,7 +101,7 @@ for row in maze:
         t.forward(size*2)
     t.penup()
     t.goto(-10 * size,t.ycor()-size*2)
-t.goto(-10 * size,10 * size)
+t.goto(-10 * size,12 * size)
 t.right(90)
 for row in maze:
     for cell in row:
@@ -105,15 +116,16 @@ for row in maze:
         t.right(90)
     t.goto(-10 * size,t.ycor()-size*2)
 t.penup()
-t.goto(10 * size,10 * size)
+t.goto(10 * size,12 * size)
 t.pendown()
 t.forward(20 * size)
 t.penup()
-t.goto(-10*size,-10*size)
+t.goto(-10*size,12*size)
 t.left(90)
 t.pendown()
-t.forward(size * 20)
-t.done()
+t.forward(size * 18)
+
 print(maze)
 print(len(visited))
 print(visited)
+t.done()
