@@ -4,8 +4,8 @@ import random as r
 import turtle as t
 #create empty maze list
 maze = []
-#create size variable
-size = 15
+#create width variable
+width = r.randint(8,16)
 #create function for neighbors choice
 def find_neighbors(x, y):
     neighbors = []
@@ -18,22 +18,22 @@ def find_neighbors(x, y):
             neighbors.remove(i)
         elif i[0] < 0 or i[1] < 0:
             neighbors.remove(i)
-        elif i[0] >= size or i[1] >= size:
+        elif i[0] >= width or i[1] >= width:
             neighbors.remove(i)
     #return neighbors
     return neighbors
     
 #loop through y coordinates of the maze
-for y in range(0,size):
+for y in range(0,width):
     #empty row list
     row = []
     #loop through x coordinates of the maze
-    for x in range(0,size):
+    for x in range(0,width):
         #add [1,1,1,1] to row list. This represents the sides, with 1 being wall and 0 being no wall, starting at the top and moving clockwise
         row.append([1,1,1,1])
     #add row list to maze list
     maze.append(row)
-maze[size-1][0][0] = 0
+maze[width-1][0][0] = 0
 #set x and y starting coords
 x, y = 0, 0
 #create an empty "visited" list
@@ -42,7 +42,7 @@ visited = []
 stack = []
 #loop until visited list contains all cells
 exit = False
-while len(visited) < size ** 2:
+while len(visited) < width ** 2:
     #add current x and y coordinate to the visited list and a "stack" list
     visited.append([x,y])
     neighbors = []
@@ -89,10 +89,14 @@ while len(visited) < size ** 2:
     maze[y][x][self_remove] = 0
     #set x and y coordinate to that of the chosen neighbor
     x,y = neighbor
+size = 300 / width
+full_width = size * 2 * width
+half_width = size * width
 t.hideturtle()
+t.pensize(3)
 t.penup()
 t.speed(0)
-t.goto(-10 * size,10 * size)
+t.goto(half_width / -1,half_width - size * 2)
 for row in maze:
     for cell in row:
         t.penup()
@@ -100,30 +104,30 @@ for row in maze:
             t.pendown()
         t.forward(size*2)
     t.penup()
-    t.goto(-10 * size,t.ycor()-size*2)
-t.goto(-10 * size,12 * size)
+    t.goto(half_width / -1,t.ycor()-size*2)
+t.goto(half_width / -1,half_width)
 t.right(90)
 for row in maze:
     for cell in row:
         t.penup()
         if cell[3] == 1:
             t.pendown()
-        t.forward(size*2)
-        t.penup()
-        t.backward(size*2)
+            t.forward(size*2)
+            t.penup()
+            t.backward(size*2)
         t.left(90)
         t.forward(size*2)
         t.right(90)
-    t.goto(-10 * size,t.ycor()-size*2)
+    t.goto(half_width / -1,t.ycor()-size*2)
 t.penup()
-t.goto(10 * size,12 * size)
+t.goto(half_width,half_width)
 t.pendown()
-t.forward(20 * size)
+t.forward(full_width)
 t.penup()
-t.goto(-10*size,12*size)
+t.goto(half_width / -1,half_width)
 t.left(90)
 t.pendown()
-t.forward(size * 18)
+t.forward(full_width - size * 2)
 
 print(maze)
 print(len(visited))
