@@ -81,9 +81,8 @@ while len(visited) < width ** 2:
                 break
     if exit:
         break
-    
+    #add chosen neighbor to stack
     stack.append(neighbor)
-    print(neighbor)
     #remove wall between current cell and chosen neighbor cell
     if neighbor[0] == x - 1:
         neighbor_remove = 1
@@ -102,47 +101,45 @@ while len(visited) < width ** 2:
     maze[y][x][self_remove] = 0
     #set x and y coordinate to that of the chosen neighbor
     x,y = neighbor
-
-t.hideturtle()
+#setup turtle
+#t.hideturtle()
 t.pensize(3)
-t.penup()
 t.speed(0)
-t.goto(half_width / -1,half_width - size * 2)
+t.pendown()
+#move turtle to top left
+t.teleport(half_width / -1,half_width - size * 2)
+#loop through maze rows
 for row in maze:
+    #loop through cells in row
     for cell in row:
-        t.penup()
+        #if there is a wall on the top of the current cell
         if cell[0] == 1:
-            t.pendown()
-        t.forward(size*2)
-    t.penup()
-    t.goto(half_width / -1,t.ycor()-size*2)
-t.goto(half_width / -1,half_width)
-
-for row in maze:
-    for cell in row:
-        t.penup()
-        if cell[3] == 1:
-            t.right(90)
-            t.pendown()
+            #move forward one wall
             t.forward(size*2)
-            t.penup()
-            t.backward(size*2)
-            t.left(90)
-        t.forward(size*2)
-        
-    t.goto(half_width / -1,t.ycor()-size*2)
+        #otherwise
+        else:
+            #teleport forward one wall
+            t.teleport(t.xcor() + size * 2, t.ycor())
+    #teleport down one wall and back to the left
+    t.teleport(half_width / -1,t.ycor()-size*2)
+#teleport to the top left
+t.teleport(half_width / -1,half_width)
+#face turtle down
 t.right(90)
-t.penup()
-t.goto(half_width,half_width)
-t.pendown()
+#loop through maze rows
+for row in maze:
+    #loop through cells in row
+    for cell in row:
+        if cell[3] == 1:
+            t.forward(size*2)
+            t.teleport(t.xcor(), t.ycor() + size * 2)
+        #teleport forward one wall
+        t.teleport(t.xcor() + size * 2, t.ycor())
+        
+    t.teleport(half_width / -1,t.ycor()-size*2)
+t.teleport(half_width,half_width)
 t.forward(full_width)
-t.penup()
-t.goto(half_width / -1,half_width)
+t.teleport(half_width / -1,half_width)
 t.left(90)
-t.pendown()
 t.forward(full_width - size * 2)
-
-print(maze)
-print(len(visited))
-print(visited)
 t.done()
