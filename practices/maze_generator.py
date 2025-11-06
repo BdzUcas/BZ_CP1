@@ -5,7 +5,6 @@ import turtle as t
 #create empty maze list
 maze = []
 #create width variable
-width = r.randint(8,16)
 #create function for neighbors choice
 def find_neighbors(x, y):
     neighbors = []
@@ -22,18 +21,31 @@ def find_neighbors(x, y):
             neighbors.remove(i)
     #return neighbors
     return neighbors
-    
-#loop through y coordinates of the maze
-for y in range(0,width):
-    #empty row list
-    row = []
-    #loop through x coordinates of the maze
-    for x in range(0,width):
-        #add [1,1,1,1] to row list. This represents the sides, with 1 being wall and 0 being no wall, starting at the top and moving clockwise
-        row.append([1,1,1,1])
-    #add row list to maze list
-    maze.append(row)
-maze[width-1][0][0] = 0
+#create function for calculating size values
+def find_size():
+    width = r.randint(8,16)
+    size = 300 / width
+    full_width = size * 2 * width
+    half_width = size * width
+    return width, size, full_width, half_width
+#create function for generating maze
+def generate_maze(width):
+    #loop through y coordinates of the maze
+    for y in range(0,width):
+        #empty row list
+        row = []
+        #loop through x coordinates of the maze
+        for x in range(0,width):
+            #add [1,1,1,1] to row list. This represents the sides, with 1 being wall and 0 being no wall, starting at the top and moving clockwise
+            row.append([1,1,1,1])
+        #add row list to maze list
+        maze.append(row)
+    maze[width-1][0][0] = 0
+    return maze
+#Get size
+width, size, full_width, half_width = find_size()
+#Generate maze
+maze = generate_maze(width)
 #set x and y starting coords
 x, y = 0, 0
 #create an empty "visited" list
@@ -45,6 +57,7 @@ exit = False
 while len(visited) < width ** 2:
     #add current x and y coordinate to the visited list and a "stack" list
     visited.append([x,y])
+    #reset neighbors list
     neighbors = []
     #loop while we have no neighbors
     while not neighbors:
@@ -89,9 +102,7 @@ while len(visited) < width ** 2:
     maze[y][x][self_remove] = 0
     #set x and y coordinate to that of the chosen neighbor
     x,y = neighbor
-size = 300 / width
-full_width = size * 2 * width
-half_width = size * width
+
 t.hideturtle()
 t.pensize(3)
 t.penup()
@@ -106,19 +117,21 @@ for row in maze:
     t.penup()
     t.goto(half_width / -1,t.ycor()-size*2)
 t.goto(half_width / -1,half_width)
-t.right(90)
+
 for row in maze:
     for cell in row:
         t.penup()
         if cell[3] == 1:
+            t.right(90)
             t.pendown()
             t.forward(size*2)
             t.penup()
             t.backward(size*2)
-        t.left(90)
+            t.left(90)
         t.forward(size*2)
-        t.right(90)
+        
     t.goto(half_width / -1,t.ycor()-size*2)
+t.right(90)
 t.penup()
 t.goto(half_width,half_width)
 t.pendown()
