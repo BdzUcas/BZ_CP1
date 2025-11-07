@@ -23,8 +23,8 @@ def find_neighbors(x, y):
     return neighbors
 #create function for calculating size values
 def find_size():
-    width = r.randint(8,16)
-    size = 300 / width
+    width = r.randint(16,48)
+    size = 400 / width
     full_width = size * 2 * width
     half_width = size * width
     return width, size, full_width, half_width
@@ -40,7 +40,7 @@ def generate_maze(width):
             row.append([1,1,1,1])
         #add row list to maze list
         maze.append(row)
-    maze[width-1][0][0] = 0
+    maze[width-1][r.randint(0,width-1)][0] = 0
     return maze
 #Get size
 width, size, full_width, half_width = find_size()
@@ -102,7 +102,7 @@ while len(visited) < width ** 2:
     #set x and y coordinate to that of the chosen neighbor
     x,y = neighbor
 #setup turtle
-#t.hideturtle()
+t.hideturtle()
 t.pensize(3)
 t.speed(0)
 t.pendown()

@@ -46,13 +46,22 @@ while True:
     print(f'Turn {turn}. You have ${money}, and {stocks} stocks.')
     t.sleep(1)
     if stocks > 0:
+        stock_change = r.randint(-2,2)
         if stock_cost + stock_change < 1:
-            stock_change = r.randint(1,2)
+            stock_change = r.randint(1,3)
+        elif stock_cost + stock_change < 4:
+            stock_change = r.randint(-1,2)
         elif stock_cost + stock_change > 15:
-            stock_change = r.randint(-2,1)
+            stock_change = r.randint(-3,1)
+        elif stock_cost + stock_change > 10:
+            stock_change = r.randint(-3,2)
         else:
-            stock_change = r.randint(-2,2)
-
+            if r.randint(0,1) == 0:
+                stock_change = r.randint(-3,3)
+            else:
+                stock_change = r.randint(-2,2)
+        if stock_change == 0:
+            stock_change = r.randint(-1,1)
         stock_cost += stock_change
         print(f'The stock value is now {stock_cost}! It changed by {stock_change}.')
         t.sleep(1)
@@ -87,6 +96,7 @@ while True:
         if lottery_win <= lottery:
             print(f'You won! You get ${lottery_value}')
             money += lottery_value
+            print(f'You now have {money}!')
         else:
             print('You didn\'t win. Too bad!')
         lottery = 0
@@ -167,6 +177,22 @@ while True:
             print("Nice job!")
         elif score >= 1000:
             print("Wow!")
+        elif score >= 10000:
+            print('Epic!')
+        elif score >= 100000:
+            print('You will go down in history as an investing champion')
+        elif score >= 1000000:
+            print('You made millions off investing! Very impressive! Don\'t go betting it all on a coin flip! Or do, i don\'t care.')
+        elif score >= 10000000:
+            print('You are truly one of the greatest investors to ever live!')
+        elif score >= 100000000:
+            print('You are either a genius, or just unbelievably lucky.')
+        elif score >= 1000000000:
+            print('You are an investing billionare! Truly, amazing.')
+        elif score >= 1000000000000:
+            print('Stop cheating. You know you didn\'t really earn that trillion dollars.')
+        elif score >= 1000000000000000:
+            print('I\'m not even going to ask.')
         break
     elif activity in input_lottery:
         print('Welcome to the lottery!')
