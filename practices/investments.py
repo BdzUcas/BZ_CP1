@@ -56,7 +56,7 @@ while True:
         elif stock_cost + stock_change > 10:
             stock_change = r.randint(-3,2)
         else:
-            if r.randint(0,1) == 0:
+            if r.randint(0,2) == 0:
                 stock_change = r.randint(-3,3)
             else:
                 stock_change = r.randint(-2,2)
@@ -139,8 +139,14 @@ while True:
             stocks -= sell_stocks
     elif activity in input_loan:
         if loan_turns > 0:
-            print('You already have money from me!')
+            print('You\'d like to add money to your loan, egh?')
             t.sleep(1)
+            print('You can, but it won\'t extend the time you have.')
+            t.sleep(1)
+            print('And you\'ll still owe what you did before!')
+            t.sleep(1)
+            print()
+            loan += u.int_input('How much would you like to add? I\'d say you can add up to $1000','That\'s not a number, now is it?')
             continue
         print('You need some money, egh?')
         t.sleep(1)
