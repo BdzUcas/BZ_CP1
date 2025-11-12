@@ -1,7 +1,90 @@
 #BZ 1st Order Up!
 #import libraries
-import time
+import time as t
 from datetime import datetime
+import random as r
+#define functions
+#tip input function
+def get_tip():
+    #loop forever
+    while True:
+        #prompt user to add a tip
+        print('How much would you like to tip?')
+        #take user input
+        tip = input()
+        #if input is "no"
+        if tip in ['no','no thanks','no thank you']:
+            #set tip to 0
+            tip = 0
+            #exit loop
+            break
+        #otherwise, if tip is a number
+        elif tip.replace('.','').isdigit():
+            #exit loop
+            break
+        #otherwise
+        else:
+            #tell user to input a number
+            print('Please input a number!')
+    return tip
+#price calculator function
+def finalize_price(order, cost):
+    #get tip amount
+    tip = get_tip()
+    #add tip amount to price
+    cost += int(tip)
+    print('Your order:')
+    #loop through items in order
+    for order_item in order:
+        #Display item and its cost
+        print(f'{order_item[0].capitalize()}: {order_item[1]}')
+    print(f'Tip: {tip}')
+    #display total price
+    print(f'Total: {cost}')
+    return cost
+#get time of day function
+def get_daytime():
+    #get hour as a float
+    hour = float(datetime.now().strftime('%H'))
+    #if hour is between 1 and 10 am
+    if hour <= 9 and hour > 0:
+        #set time of day to breakfast
+        tod = 'breakfast'
+    #if hour is between 10 am and 2 pm
+    elif hour > 9 and hour <= 13:
+        #set time of day to lunch
+        tod = 'lunch'
+    #if hour is between 2 pm and 12 am
+    elif hour > 13 and hour <= 23:
+        #set time of day to dinner
+        tod = 'dinner'
+    #otherwise (hour will be between 12 and 1 am)
+    else:
+        #set time of day to illegal
+        tod = 'illegal'
+    #return time of day
+    return tod
+#option choosing function
+def choose_option(item,tod):
+    #tell user to pick an option
+    print(f'\nSelect a {item}:')
+    #loop through potential options for item type based on time of day
+    options = items[item][tod].keys()
+    for option in options:
+        #display option and price
+        print(f'{option.capitalize()}: ${items[item][tod][option]}')
+    #loop forever
+    while True:
+        #take user input
+        choice = input().lower().strip()
+        #if it is a valid choice
+        if choice in options:
+            #end loop and return choice
+            return choice
+        #otherwise
+        else:
+            #tell user to pick a valid option
+            print('Please pick a valid choice!')
 #Add meal size options (meal, large meal, family meal)
 menu = {
     'meal': ['entree','side','side','drink'],
@@ -40,7 +123,7 @@ items = {
             'the souls of your enemies': 10.00,
             'unlimited power': 15.00,
             'fred': 10.00,
-            'hot (totally not real) dog': 5.00
+            'hot dog (not actually a dog)': 5.00
         }
     },
 
@@ -70,8 +153,8 @@ items = {
             'meatballs': 1.00
         },
         'illegal': {
-            '"totally not real" eyeballs': 5.00,
-            "how'd you get here anyway?": 4.00,
+            '"candy" eyeballs': 5.00,
+            "... ... steak!": 4.00,
             'lava chicken': 3.00
         }
     },
@@ -100,13 +183,24 @@ items = {
         'illegal': {
             '"water"': 1.00,
             'assorted juices': 2.00,
-            '"cow" milk': 1.50,
+            'cow... milk': 1.50,
             'mayonnaise': 2.00,
             'coughee': 2.00
         }
         
     }
 }
+#greetings list
+greetings = {
+    'breakfast': ['Good morning! What would you like to order?','Nice morning, isn\'t it? What would you like?', 'Good morning, or whatever. What do you want?'],
+    'lunch': ['Good afternoon! What would you like to order?','Bit hot, isn\'t it? What would you like to eat?','Afternoon, er, do you want something?'],
+    'dinner': ['Good evening! What would you like to order?','Bit chilly, no? What would you like for dinner?','Erm, just take the food.'],
+    'illegal': ['You\'re here late! While, lucky for you we offer 24 hour service!','Bit late for food, don\'t you think? Well, if you insist...','Hello, umm... welcome to... wendy\'s or something. We\'re, er, closed. Maybe. That sounds right.']
+    
+}
+tod = get_daytime()
+#welcome the user to the program with a different message randomly selected from the messages for the time of day 
+print(r.choice(greetings[tod]))
 #loop forever
 while True:
     #prompt user to select meal, large meal, or family meal
@@ -119,72 +213,18 @@ while True:
     else:
         #tell them to pick a valid option
         print('Please select a valid input!')
-#determine time of day
-hour = float(datetime.now().strftime('%H'))
-if hour <= 9 and hour > 0:
-    tod = 'breakfast'
-elif hour > 9 and hour <= 13:
-    tod = 'lunch'
-elif hour > 13 and hour <= 23:
-    tod = 'dinner'
-else:
-    tod = 'illegal'
+
 order = []
 cost = 0
 #loop through items in choice
 for item in menu[meal]:
-    #tell user to pick an option
-    print(f'\nSelect a {item}:')
-    #loop through potential options for item type based on time of day
-    options = items[item][tod].keys()
-    for option in options:
-        #display option and price
-        print(f'{option.capitalize()}: ${items[item][tod][option]}')
-    #loop forever
-    while True:
-        #take user input
-        choice = input().lower().strip()
-        #if it is a valid choice
-        if choice in options:
-            #end loop
-            break
-        #otherwise
-        else:
-            #tell user to pick a valid option
-            print('Please pick a valid choice!')
+    #have user pick an option
+    choice = choose_option(item,tod)
     #add chosen item to order
-    order.append([choice,items[item][tod][option]])
+    order.append([choice,items[item][tod][choice]])
     #add item's cost to total cost
-    cost += items[item][tod][option]
-#loop forever
-while True:
-    #prompt user to add a tip
-    print('How much would you like to tip?')
-    #take user input
-    tip = input()
-    #if input is "no"
-    if tip in ['no','no thanks','no thank you']:
-        #set tip to 0
-        tip = 0
-        #exit loop
-        break
-    #otherwise, if tip is a number
-    elif tip.replace('.','').isdigit():
-        #exit loop
-        break
-    #otherwise
-    else:
-        #tell user to input a number
-        print('Please input a number!')
-#add tip amount to price
-cost += int(tip)
-print('Your order:')
-#loop through items in order
-for order_item in order:
-    #Display item and its cost
-    print(f'{order_item[0].capitalize()}: {order_item[1]}')
-print(f'Tip: {tip}')
-#display total price
-print(f'Total: {cost}')
+    cost += items[item][tod][choice]
+#display order and finalize price
+cost = finalize_price(order, cost)
 #thank user for ordering
 print('Thanks for ordering!')
