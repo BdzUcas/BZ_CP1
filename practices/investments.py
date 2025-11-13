@@ -145,8 +145,9 @@ while True:
             t.sleep(1)
             print('And you\'ll still owe what you did before!')
             t.sleep(1)
-            print()
-            loan += u.int_input('How much would you like to add? I\'d say you can add up to $1000','That\'s not a number, now is it?')
+            loan_add = u.int_input('How much would you like to add? I\'d say you can add up to $1000','That\'s not a number, now is it?\n')
+            owed += loan_add * 1.5
+            money += loan_add
             continue
         print('You need some money, egh?')
         t.sleep(1)

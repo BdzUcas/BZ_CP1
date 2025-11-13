@@ -140,7 +140,7 @@ def monster_turn():
     return 0
 
 #Introduce program
-print('Welcome challenger!')
+print('Welcome challengers')
 t.sleep(1)
 #Get user stats
 name = input('Enter your name: ').strip()
