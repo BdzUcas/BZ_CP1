@@ -64,6 +64,7 @@ def get_daytime():
         tod = 'illegal'
     #return time of day
     return tod
+
 #option choosing function
 def choose_option(item,tod):
     #tell user to pick an option
@@ -85,12 +86,29 @@ def choose_option(item,tod):
         else:
             #tell user to pick a valid option
             print('Please pick a valid choice!')
+
+#meal choice function
+def mealChoice():
+    #loop forever
+    while True:
+        #prompt user to select meal, large meal, or family meal
+        meal = input('Would you like a meal, large meal, or family meal?\n').lower().strip()
+        #if they selected a valid option
+        if meal in ['meal','large meal','family meal']:
+            #return meal they chose
+            return meal
+        #otherwise
+        else:
+            #tell them to pick a valid option
+            print('Please select a valid input!')
+
 #Add meal size options (meal, large meal, family meal)
 menu = {
     'meal': ['entree','side','side','drink'],
     'large meal': ['entree','entree','side','side','drink'],
     'family meal': ['entree','entree','entree','entree','entree','side','side','side','side','side','drink','drink','drink','drink','drink']
 }
+
 #Add options for each type item (entree, side, drink) associated with their prices and per time of day
 items = {
     'entree': {
@@ -190,6 +208,7 @@ items = {
         
     }
 }
+
 #greetings list
 greetings = {
     'breakfast': ['Good morning! What would you like to order?','Nice morning, isn\'t it? What would you like?', 'Good morning, or whatever. What do you want?'],
@@ -198,25 +217,16 @@ greetings = {
     'illegal': ['You\'re here late! While, lucky for you we offer 24 hour service!','Bit late for food, don\'t you think? Well, if you insist...','Hello, umm... welcome to... wendy\'s or something. We\'re, er, closed. Maybe. That sounds right.']
     
 }
+
 tod = get_daytime()
 #welcome the user to the program with a different message randomly selected from the messages for the time of day 
 print(r.choice(greetings[tod]))
-#loop forever
-while True:
-    #prompt user to select meal, large meal, or family meal
-    meal = input('Would you like a meal, large meal, or family meal?\n').lower().strip()
-    #if they selected a valid option
-    if meal in ['meal','large meal','family meal']:
-        #end loop
-        break
-    #otherwise
-    else:
-        #tell them to pick a valid option
-        print('Please select a valid input!')
-
+#get user meal size choice
+meal = mealChoice()
+#reset order and cost variables
 order = []
 cost = 0
-#loop through items in choice
+#loop through items in meal choice
 for item in menu[meal]:
     #have user pick an option
     choice = choose_option(item,tod)
