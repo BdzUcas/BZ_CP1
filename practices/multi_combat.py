@@ -40,15 +40,25 @@ classes = {
         'health_die': 6,
         'atk': 5,
         'dex': 3,
-        'def': 0
+        'def': -3
     }
 }
+second_word = ['Joe','Cthulu','Goblin','Man','Cat','Destroyer','Fred','Pencil','Beholder','Dog','Cultist','Worm','Muppet','Robot','Cupboard','Beast','Hog','Assasin','Queen','Idol','Bob','Clang']
+first_word = ['Crazy ','Rainbow ','Ultimate ','Incredi','Wimpy ','Awesome ','Interdimensional ','Intimidating ','Forest ','Desert ','Average ','','Zombie ','Robot ','Surprise ','Mystery ','Jeff the ','Winter ','Sneaky ','Evil ','Demon ','Angel ','Death ','Super']
+
 print('Welcome Challengers!')
 s()
 player_amount = intInput('How many are playing?\n')
 s()
 for player in range(0, player_amount):
-    player_name = input(f'Challenger {player + 1}: Enter your name\n')
+    while True:
+        player_name = input(f'Challenger {player + 1}: Enter your name\n')
+        try:
+            players[player_name]
+            print('Choose a unique name!')
+            continue
+        except:
+            break
     player_class = choiceInput(['fighter','wizard','tank','rogue'],f'Challenger {player + 1}: Choose a class:\n- Fighter\n- Wizard\n- Tank\n- Rogue\n')
     die = classes[player_class]['health_die']
     player_hp = 0
