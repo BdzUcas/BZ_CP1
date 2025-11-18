@@ -1,6 +1,7 @@
 #BZ 1st Flexible Calculator Calculator
 #operation function
-def run_operation(numbers,op):
+def run_operation(*numbers_list,op):
+    numbers = numbers_list[0]
     #if our operation is max
     if op == 'max':
         #return max of numbers
@@ -74,5 +75,5 @@ while not False:
             #tell user to enter numbers or "done"
             print('Please enter a number or "done".')
 #run operation on numbers list
-print(f'Result: {run_operation(numbers = nums,op = operation)}')
+print(f'Result: {run_operation(nums,op = operation)}')
 #the generator wasn't passing arguments but instead just the generator object as an argument and i wasn't sure how to fix that so i just passed it as a list sorry
