@@ -15,7 +15,7 @@
                     #set sum to 1
                 #mutliply sum by number
         #if operation is average
-        #divide sum by length of numbers
+        #divide sum by length of numbers list
         #return sum
     #if our operation is anything else
         #return nothing
