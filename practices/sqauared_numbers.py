@@ -7,3 +7,14 @@ squared_list = list(map(lambda num:num*num,nums))
 for sqrd in squared_list:
     #Print the origanal number and the squared number
     print(f'Original: {nums[squared_list.index(sqrd)]} Squared: {sqrd}')
+
+#60 characters (mapping):
+#o=range(99)
+#for i,j in zip(map(lambda n:n*n,o),o):print(j,i)
+
+#57 characters (using lists):
+#o=range(99)
+#for i,j in zip([n*n for n in o],o):print(j,i)
+
+#31 characters:
+#for i in range(99):print(i,i*i)
