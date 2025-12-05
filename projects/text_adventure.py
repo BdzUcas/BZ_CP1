@@ -32,59 +32,72 @@ def useItem(player_info, item):
         if item in player_info['equipped']:
             print('You already have that equipped!')
         else:
-            if item == 'bandanna' and 'hat' in player_info['inventory']:
-                print('You remove the cowboy hat')
-                player_info['inventory'].remove('hat')
-            if item == 'hat' and 'bandanna' in player_info['inventory']:
-                print('You remove the bandit bandanna')
-                player_info['inventory'].remove('bandanna')
+            if (item == 'bandanna') and 'hat' in player_info['equipped']:
+                display('You remove the Cowboy Hat.')
+                player_info['equipped'].remove('hat')
+            if (item == 'hat') and 'bandanna' in player_info['equipped']:
+                display('You remove the Bandit Bandanna')
+                player_info['equipped'].remove('bandanna')
             player_info['equipped'].append(item)
             player_info['charisma'] += 1
     display(items[item]['use'])
     return player_info
+def combat(enemy, player_info):
+    display(f'{enemy['name']} begins combat!')
+    turn = 0
+    while True:
+        turn += 1
+        print("Attack, Persuade, or Use?")
+        action = choiceInput(['attack','persuade','use'])
+        if turn == 1:
+            enemy_choice = r.choice(['persuade','attack'])
+        elif enemy['hp'] < 2:
+            enemy_choice = r.choice(['attack','persuade','persuade'])
+        else:
+            enemy_choice = r.choice(['attack','attack','persuade'])
+        if action == 'use':
+            if enemy_choice == 'attack':
+                player_info['hp'] == player_info['hp'] - 2
+                display('You were shot!')
+                if player_info['hp'] < 1:
+                    display('You died!')
+                    return False
+            elif enemy_choice == 'persuade':
+                display(f'{enemy['name']} tries to persuade you to not use an item')
+            used = choiceInput(player_info['inventory'])
+            player_info = useItem(player_info,used)
+        elif action == 'attack':
+            if enemy_choice == 'attack':
+                if r.randint(0,1) == 0:
+                    player_info['hp'] == player_info['hp'] - 2
+                display('You were shot!')
+                if player_info['hp'] < 1:
+                    display('You died!')
+                    return False
+                else:
+                    enemy['hp'] -= 1
+                    display(f'You shot {enemy['name']}!')
+                    if enemy['hp'] < 1:
+                        if enemy['name'] != 'your Grandma':
+                            display(f'{enemy['name']} dies!')
+                        return player_info
+            elif enemy_choice == 'persuade':
+                if player_info['drunk turns'] > 0:
+                    persuaded = charismaCheck(enemy['charisma'], 4 + player_info['charisma'])
+                else:
+                    persuaded = charismaCheck(enemy['charisma'], 5 + player_info['charisma'])
+            if persuaded:
+                display(f'{enemy['name']} persuades you not to shoot them!')
+            else:
+                enemy['hp'] -= 1
+                display(f'You shot {enemy['name']}!')
+                if enemy['hp'] < 1:
+                    if enemy['name'] != 'your Grandma':
+                        display(f'{enemy['name']} dies!')
+                    return player_info
+            
+					
 
-#Define function combat(enemy_info, player_info):
-#	Display opponent name
-#	loop forever:
-#action = choiceInput (attack, persuade, use)
-#If it is the first turn of combat:
-#	enemy_choice = random choice from (persuade, attack)
-#Otherwise If enemy has been hit:
-#	enemy_action = random choice from (attack, persuade, persuade)
-#Otherwise:
-#	enemy_action = random choice from (attack, attack, persuade)
-#If action = use:
-#	If enemy_action = attack:
-#Reduce player HP by 2
-#display(You were shot!)
-#If player HP is less than 1:
-#display(You died!)
-#Return false
-#		Otherwise if enemy_action = persuade:
-#			display((enemy name) tries to persuade you not to use an item)
-#		used_item = choiceInput(current inventory)
-#	player_info = useItem(player_info, used_item)
-#	Otherwise if action = attack:
-#		If enemy_action = attack:
-#			Shot = Pick random from player or enemy:
-#				If shot = player:
-#Reduce player HP by 2
-#display(You were shot!)
-#If player HP is less than 1:
-#display(You died!)
-#Return false
-#				Otherwise:
-#					Reduce enemy hp by 1
-#					display(You shoot (enemy name))
-#					If enemy hp is less than 1:
-#						if enemy is not bad guy bill:
-#display((enemy name) dies!)
-#Return player_info					
-#		Otherwise if enemy_action = persuade:
-#If drunk_turns is greater than 0			
-#persuaded = charisma_check(enemy charisma, 4 + player charisma)
-#Otherwise:
-#	persuaded = charisma_check(enemy charisma, 5 + player charisma)
 #If persuaded:
 #	display((enemy name) persuades you not to shoot them!)
 #Otherwise:
