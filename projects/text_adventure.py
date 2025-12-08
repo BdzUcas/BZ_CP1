@@ -184,6 +184,16 @@ items = {
         'name': "Bandit Bandanna", 
         'inspect': "A bandanna worn by the Westville Bandits. Makes you look just like one!",
         'use': "You equip the Bandit Bandanna. Intimidating!"
+    },
+    'weasel trap': {
+        'name': "Weasel Trap", 
+        'inspect': "A clever trap for a weasel.",
+        'use': "There aren't any weasels around!"
+    },
+    'captured weasel': {
+        'name': "Captured Weasel", 
+        'inspect': "A fat weasel caught in a trap. Looks like it has been eating well.",
+        'use': "You can't figure out how to get it open."
     }
 }
 rooms = {
@@ -369,19 +379,19 @@ def forest(room, player):
             options.append('weasel')
         if action == 'inspect':
             inspected = choiceInput(options)
-#	Inspected = choiceInput(options)
-#	if inspected == bandit:
-#		display(>Hey dude.)
-#	elif inspected == weasel:
-#		display(It's just a weasel. It is a bit fat, looks like it has been eating well.)
-#	else:
-#		display normal inspect message for the object
-#elif action == use:
-#	used_item = choiceInput(player['inventory'])
-#	if used item = weasel trap:
-#		display(You catch the weasel in the trap!)
-#		add captured weasel to inventory
-#		set weasel caught to true
+            if inspected == 'bandit':
+                display('>Hey dude.')
+            elif inspected == 'weasel':
+                display("It's just a weasel. It is a bit fat, looks like it has been eating well.")
+            else:
+                display(items[inspected]['inspect'])
+        elif action == 'use':
+            used_item = choiceInput(player['inventory'])
+            if used_item == 'weasel trap':
+                display("You catch the weasel in the trap!")
+                player['inventory'].append('captured weasel')
+                room['weasel'] = True
+
 #	else:
 #player_data = useItem(player_data,used_item)
 #elif action == inventory:
