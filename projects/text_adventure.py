@@ -391,168 +391,160 @@ def forest(room, player):
                 display("You catch the weasel in the trap!")
                 player['inventory'].append('captured weasel')
                 room['weasel'] = True
-
-#	else:
-#player_data = useItem(player_data,used_item)
-#elif action == inventory:
-#	print(f'Inventory: {', '.join(player['inventory'])}')
-#elif action == move:
-#	display(move where?)
-#	moved = choiceInput(grandma's house, ranch, sheriff's office)
-#	return room, player, and the id of the room moved to
-#function clothesShop(room, player):
-#	display(Taylor the Taylor is sitting at a desk.)
-#	display(>Hello! What can I do for you today?)
-#	if player has cookie and not the sheriff's badge:
-#		display(>Wait a minute… is that a cookie i smell? Could i have it?)
-#		choice = choiceinput(y,yes,n,no)
-#		if choice = y or yes:
-#			display(>Thanks! Here, take this. I think you lost it.)
-#			add sheriff's badge to inventory
-#			display(You got the sheriff's badge!)
-#		else:
-#			display(Aw… okay.)
-#		display(Anyways, would you like to buy some clothes?)
-#	display(>We have the glue-on mustache and the cowboy hat!)
-#	display(Mustache, Hat, or Leave?)
-#	choice = choiceInput(mustache, hat, leave)
-#	if choice = mustache:
-#		display(>That will be $(4 - charisma).)
-#		if money is greater than or equal to 4 - charisma:
-#			display(You got the Glue-On Mustache!)
-#			add mustache to inventory
-#		else:
-#			display(>Aw, darn… you don't have enough. Come back later when you have some 
-#more!)
-#	elif choice = hat:
-#		display(>That will be $(4 - charisma).)
-#		if money is greater than or equal to 4 - charisma:
-#			display(You got the Cowboy Hat!)
-#			add cowboy hat to inventory
-#		else:
-#			display(>Aw, darn… you don't have enough. Come back later when you have some 
-#more!)
-#	display(You leave through the door.)
-#	if taylor does not have the sheriff's badge:
-#		display(>Man… i could sure use a treat about now)
-#	return room, player, and 1
-#function church(room, player):
-#	if Garret is defeated:
-#display(You enter the church. You can walk down into the bandit hideout or 
-#out into the town square.)
-#moved = choiceInput(hideout, town square, bandit hideout)
-#if moved = hideout or bandit hideout:
-#	display(You move down into the bandit hideout.)
-#	return room, player, and 9
-#		else:
-#			display(You leave the church.)
-#			return room, player, and 1
-#	else:
-#		display(You enter the church. Garret the Guard is standing guard over the entrance to the 
-#hideout.)
-#if you are wearing the sheriff's badge:
-#	display(>Hey! You!)
-#	player = combat(garret's info, player)
-#		if player = False:
-#			return False
-#		set bandit bart defeated to true
-#		give the player 5 money
-#		display(You can walk down into the bandit hideout or out into the town square.)
-#moved = choiceInput(hideout, town square, bandit hideout)
-#if moved = hideout or bandit hideout:
-#	display(You move down into the bandit hideout.)
-#	return room, player, and 9
-#		else:
-#			display(You leave the church.)
-#			return room, player, and 1
-#	elif you are wearing the Bandit Bandanna:
-#		display(>Oh, hey! Come to hang out in the hideout? Go ahead!)
-#			display(You can walk down into the bandit hideout or out into the town square.)
-#moved = choiceInput(hideout, town square, bandit hideout)
-#if moved = hideout or bandit hideout:
-#	display(You move down into the bandit hideout.)
-#	return room, player, and 9
-#		else:
-#			display(You leave the church.)
-#			return room, player, and 1
-#		else:
-#			display(Hey, uhh… I can't let you down there. Sorry.)
-#			display(You leave the church.)
-#		return room, player, and 1
-#function westaurant(room, player)
-#	if jed is defeated:
-#		display(You enter the westaurant. Jed is dead, but Leviticus is still here.)
-#		display(>Ranch?)
-#		if player has ranch:
-#			display(>Ranch!)
-#			display(Leviticus seizes the ranch. He drops a key from his pocket without noticing.)
-#			display(You got the Priest's Key!)
-#		display(You can move into the back room or into the town square.)
-#moved = choiceInput(town square, back room)
-#if moved = back room:
-#	display(You move down into the back room.)
-#	return room, player, and 10
-#		else:
-#			display(You leave the westaurant.)
-#			return room, player, and 1
-#	else:
-#		display(You enter the westaurant. Jed is tending the counter.)
-#		display(A strange voice rings out from the corner)
-#		display(>Ranch?)
-#		display(Leviticus is sitting in the corner, wearing priest's robes covered in ranch stains.)
-#		if player is wearing the sheriff's badge:
-#			display(Jed is staring at your badge)
-#			display(>Hang on… you're the new sheriff! Take this!)
-#			display(Jed takes off his hat, revealing a bandit bandanna.)
-#			player = combat(jed's info, player)
-#		if player = False:
-#			return False
-#		set jed defeated to true
-#		give the player 5 money
-#		display(You can move into the back room or into the town square.)
-#moved = choiceInput(town square, back room)
-#if moved = back room:
-#	display(You move down into the back room.)
-#	return room, player, and 10
-#		else:
-#			display(You leave the westaurant.)
-#			return room, player, and 1
-#
-#		else:
-#			display(Jed is looking at you.)
-#			display(>Hey! Would you like to buy some food?)
-#			display(Western Dinner, Western Beer, or Leave?)
-#	choice = choiceInput(dinner, beer, leave)
-#	if choice = dinner:
-#		display(>That will be $(3 - charisma).)
-#		if money is greater than or equal to 3 - charisma:
-#			display(You got the Western Dinner!)
-#			add western dinner to inventory
-#		else:
-#			display(>Aw, darn… you don't have enough. Come back later when 
-#you have some more!)
-#	elif choice = beer:
-#		display(>That will be $(2 - charisma).)
-#		if money is greater than or equal to 2 - charisma:
-#			display(You got the Western Beer!)
-#			add beer to inventory
-#		else:
-#			display(>Aw, darn… you don't have enough. Come back later when 
-#you have some more!)
-#	display(You leave through the door.)
-#	display(>Ranch?)
-#	return room, player, and 1
-#def ranch(room, player):
-#	if player has gotten the weasel trap from Billy:
-#display(You enter the ranch. Rancher Bob is tending to the animals and Billy the Kid is running around with a strange metal trap. You can move to the forest or town square.)
-#	else:
-#display(You enter the ranch. Rancher Bob is tending to the animals and Billy the Kid is eating a cookie. You can move to the forest or town square.)
-#	while True:
-#		while True:
-#display(Use, Move, Inventory, or Inspect?)
-#action = choiceInput(inspect, use, inventory, move)
-#if action = inspect:
-#	Inspected = choiceInput(Inventory items, bob, billy)
+            else:
+                player = useItem(player,used_item)
+        elif action == 'inventory':
+            print(f'Inventory: {', '.join(player['inventory'])}')
+        elif action == move:
+            display('Move where?')
+            moved = choiceInput(["grandma's house", 'ranch', "sheriff's office"])
+            return room, player, rooms[moved]
+def clothesShop(room, player):
+    display("Taylor the Taylor is sitting at a desk.")
+    display(">Hello! What can I do for you today?")
+    if 'cookie' in player['inventory']and not 'badge' in player['inventory']:
+        display(">Wait a minute… is that a cookie I smell? Could I have it?")
+        choice = choiceInput(['y','yes','n','no'])
+        if choice in ['y' or 'yes']:
+            display(">Thanks! Here, take this. I think you lost it.")
+            player['inventory'].append('badege')
+            display("You got the sheriff's badge!")
+        else:
+            display(">Aw… okay.")
+        if not ('mustache' in player['inventory'] and 'hat' in player['inventory']):
+            display(">Anyways, would you like to buy some clothes?")
+    if (not 'mustache' in player['inventory']) and (not 'hat' in player['inventory']):
+        display(">We have the glue-on mustache and the cowboy hat!")
+        display("Mustache, Hat, or Leave?")
+        choice = choiceInput(["mustache", "hat", "leave"])
+    elif ('mustache' in player['inventory']) and (not 'hat' in player['inventory']):
+        display(">We have the cowboy hat!")
+        display("Hat, or Leave?")
+        choice = choiceInput(['hat', 'leave'])
+    elif (not 'mustache' in player['inventory']) and ('hat' in player['inventory']):
+        display(">We have the glue-on mustache!")
+        display("Mustache, or Leave?")
+        choice = choiceInput("mustache, leave")
+    else:
+        display("I can't do much for you, we're fresh out of clothes.")
+        choice = ''
+    if choice == 'mustache':
+        display(f'>That will be ${4 - player['charisma']}.')
+        if player['moneu'] >= 4 - player['charisma']:
+            display('You got the Glue-On Mustache!')
+            player['inventory'].append('mustache')
+        else:
+            display(">Aw, darn… you don't have enough. Come back later when you have some more!")
+    elif choice == 'hat':
+        display(f'>That will be ${4 - player['charisma']}.')
+        if player['moneu'] >= 4 - player['charisma']:
+            display('You got the Cowboy Hat!')
+            player['inventory'].append('hat')
+        else:
+            display(">Aw, darn… you don't have enough. Come back later when you have some more!")
+    display("You leave through the door.")
+    if not 'badge' in player['inventory']:
+        display(">Man… i could sure use a treat about now.")
+    return room, player, 1
+def church(room, player):
+    if not room['garret']:
+        display('You enter the church. Garret the Guard is standing guard over the entrance to the hideout.')
+        if 'bandanna' in player['equipped']:
+            display(">Oh, hey! Come to hang out in the hideout? Go ahead!")
+        elif 'badge' in player['equipped']:
+            display('>Hey! You!')
+            player = combat({'name': 'Garret the Guard','charisma': 2,'hp': 2}, player)
+            if not player:
+                return False, False, False
+            room['garret'] = True
+            player['money'] += 5
+        else:
+            display("You can walk down into the bandit hideout or out into the town square.")
+            moved = choiceInput(['hideout', 'town square', 'bandit hideout'])
+            if moved in ['hideout','bandit hideout']:
+                display('>Uh.. you can\'t go down there.')
+            display('You leave the church.')
+            return room, player, 1
+    if room['garret']:
+        display("You can walk down into the bandit hideout or out into the town square.")
+        moved = choiceInput(['hideout', 'town square', 'bandit hideout'])
+        if moved in ['hideout','bandit hideout']:
+            display('You move down into the bandit hideout.')
+            return room, player, 9
+        else:
+            display('You leave the church.')
+            return room, player, 1
+def westaurant(room, player):
+    if room['jed']:
+        display("You enter the westaurant. Jed is dead, but Leviticus is still here.")
+        display('>Ranch?')
+        if 'ranch' in player['inventory']:
+            display('>Ranch!')
+            display("Leviticus seizes the ranch. He drops a key from his pocket without noticing.")
+            display("You got the Priest's Key!")
+        display("You can move into the back room or into the town square.")
+        moved = choiceInput(['town square', 'back room'])
+        if moved == 'back room':
+            display("You move down into the back room.")
+            return room, player, 10
+        else:
+            display("You leave the westaurant.")
+            return room, player, 1
+    else:
+        display("You enter the westaurant. Jed is tending the counter.")
+        display("A strange voice rings out from the corner")
+        display('>Ranch?')
+        display("Leviticus is sitting in the corner, wearing priest's robes covered in ranch stains.")
+        if 'badge' in player['equipped']:
+            display("Jed is staring at your badge")
+            display(">Hang on… you're the new sheriff! Take this!")
+            display("Jed takes off his hat, revealing a bandit bandanna.")
+            player = combat({'name': 'Jed','charisma': 3,'hp': 1}, player)
+            if not player:
+                return False, False, False
+            room['jed'] = True
+            player['money'] += 5
+            display("You can move into the back room or into the town square.")
+            moved = choiceInput(['town square', 'back room'])
+            if moved == 'back room':
+                display("You move down into the back room.")
+                return room, player, 10
+            else:
+                display("You leave the westaurant.")
+                return room, player, 1
+        else:
+            display("Jed is looking at you.")
+            display(">Hey! Would you like to buy some food?")
+            display("Western Dinner, Western Beer, or Leave?")
+            choice = choiceInput(['dinner', 'beer', 'leave'])
+            if choice == 'dinner':
+                display(f">That will be ${3 - player['charisma']}.")
+                if player['money'] >= 3 - player['charisma']:
+                    display('You got the Western Dinner!')
+                    player['inventory'].append('dinner')
+                else:
+                    display(">Aw, darn… you don't have enough. Come back later when you have some more!")
+            elif choice == 'beer':
+                display(f">That will be ${2 - player['charisma']}.")
+                if player['money'] >= 2 - player['charisma']:
+                    display('You got the Western Beer!')
+                    player['inventory'].append('beer')
+                else:
+                    display(">Aw, darn… you don't have enough. Come back later when you have some more!")
+            display("You leave through the door.")
+            display('>Ranch?')
+            return room, player, 1
+def ranch(room, player):
+    if not room['weasel trap']:
+        display("You enter the ranch. Rancher Bob is tending to the animals and Billy the Kid is running around with a strange metal trap. You can move to the forest or town square.")
+    else:
+        display("You enter the ranch. Rancher Bob is tending to the animals and Billy the Kid is eating a cookie. You can move to the forest or town square.")
+    while True:
+        while True:
+            display("Use, Move, Inventory, or Inspect?")
+            action = choiceInput(['inspect', 'use', 'inventory', 'move'])
+            if action == 'inspect':
+                Inspected = choiceInput(player['inventory'] + ['bob','billy'])
 #	if inspected == bob:
 #				if player has given the captured weasel to Bob:
 #					display(>Hey there! Thanks for earlier!)
