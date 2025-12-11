@@ -11,7 +11,9 @@ def choiceInput(valid_choices):
             if choice <= len(valid_choices) and choice > 0:
                 return valid_choices[choice-1]
         print('Please select a valid choice!')
-def display(text = 'Message not defined!', wait = 1):
+def display(text = 'Message not defined!', wait = 0):
+    if wait == 0:
+        wait = len(text)/15
     print(text)
     t.sleep(wait)
 def charismaCheck(cha,goal):
@@ -276,10 +278,10 @@ def sheriffOffice(room,player):
             used = choiceInput(player['inventory'] + ['front door','back door'])
             if used == 'front door':
                 display('You go through the front door, out into the town square.')
-                return player, room, 1
+                return room, player, 1
             elif used == 'back door':
                 display('You go through the back door, out into the forest.')
-                return player, room, 8
+                return room, player, 8
             else:
                 player = useItem(player,used)
         elif action == 'inventory':
@@ -295,6 +297,7 @@ def townSquare(room, player):
         display("Use, Move, Inventory, or Inspect?")
         action = choiceInput(['inspect', 'use', 'inventory', 'move'])
         if action == 'inspect':
+            print('What are you inspecting?')
             inspected = choiceInput(player['inventory'] + ['beggar'])
             if inspected == 'beggar':
                 display('>Food for the poor?')
@@ -394,6 +397,7 @@ def forest(room, player):
         if not room['weasel']:
             options.append('weasel')
         if action == 'inspect':
+            print('What are you inspecting?')
             inspected = choiceInput(options)
             if inspected == 'bandit':
                 display('>Hey dude.')
@@ -419,7 +423,7 @@ clothes_shop = {}
 def clothesShop(room, player):
     display("Taylor the Taylor is sitting at a desk.")
     display(">Hello! What can I do for you today?")
-    if 'cookie' in player['inventory']and not 'badge' in player['inventory']:
+    if 'cookie' in player['inventory'] and not 'badge' in player['inventory']:
         display(">Wait a minute… is that a cookie I smell? Could I have it?")
         choice = choiceInput(['y','yes','n','no'])
         if choice in ['y' or 'yes']:
@@ -447,14 +451,14 @@ def clothesShop(room, player):
         choice = ''
     if choice == 'mustache':
         display(f'>That will be ${4 - player['charisma']}.')
-        if player['moneu'] >= 4 - player['charisma']:
+        if player['money'] >= 4 - player['charisma']:
             display('You got the Glue-On Mustache!')
             player['inventory'].append('mustache')
         else:
             display(">Aw, darn… you don't have enough. Come back later when you have some more!")
     elif choice == 'hat':
         display(f'>That will be ${4 - player['charisma']}.')
-        if player['moneu'] >= 4 - player['charisma']:
+        if player['money'] >= 4 - player['charisma']:
             display('You got the Cowboy Hat!')
             player['inventory'].append('hat')
         else:
@@ -569,6 +573,7 @@ def ranch(room, player):
         display("Use, Move, Inventory, or Inspect?")
         action = choiceInput(['inspect', 'use', 'inventory', 'move'])
         if action == 'inspect':
+            print('What are you inspecting?')
             inspected = choiceInput(player['inventory'] + ['bob','billy'])
             if inspected == 'bob':
                 if room['weasel trade']:
@@ -672,7 +677,7 @@ def backRoom(room,player):
 
 
 
-player = {
+player_info = {
     'charisma': 0,
     'max hp': 4,
     'hp': 4,
@@ -683,35 +688,35 @@ player = {
 }
 room_num = 4
 while True:
-    display("Welcome to Westville! This rough-and-tumble town is troubled by a gang of bandits led by the infamous Bad Guy Bill. The previous sheriff of this town was killed by Bad Guy Bill. Now you are the replacement. Your mission: Find and incarcerate Bad Guy Bill. Only trouble is, nobody knows where or who he is. Maybe you should ask your grandma.")
+    display("Welcome to Westville! This rough-and-tumble town is troubled by a gang of bandits led by the infamous Bad Guy Bill. The previous sheriff of this town was killed by Bad Guy Bill. Now you are the replacement. Your mission: Find and incarcerate Bad Guy Bill. Only trouble is, nobody knows where or who he is. Maybe you should ask your grandma.", 7)
     while True:
         if room_num == 1:
-            town_square, player, room_num = townSquare(town_square, player)
+            town_square, player_info, room_num = townSquare(town_square, player_info)
         elif room_num == 2:
-            westaurant_info, player, room_num = townSquare(westaurant_info, player)
+            westaurant_info, player_info, room_num = townSquare(westaurant_info, player_info)
         elif room_num == 3:
-            grandma_house, player, room_num = grandmaHouse(grandma_house, player)
+            grandma_house, player_info, room_num = grandmaHouse(grandma_house, player_info)
         elif room_num == 4:
-            sheriff_office, player, room_num = sheriffOffice(sheriff_office, player)
+            sheriff_office, player_info, room_num = sheriffOffice(sheriff_office, player_info)
         elif room_num == 5:
-                clothes_shop, player, room_num = clothesShop(clothes_shop, player)
+            clothes_shop, player_info, room_num = clothesShop(clothes_shop, player_info)
         elif room_num == 6:
-                chruch_info, player, room_num = church(chruch_info,  player)
+            church_info, player_info, room_num = church(church_info,  player_info)
         elif room_num == 7:
-            ranch_info, player, room_num = ranch(ranch_info, player)
+            ranch_info, player_info, room_num = ranch(ranch_info, player_info)
         elif room_num == 8:
-            forest_info, player, room_num = forest(forest_info, player)
+            forest_info, player_info, room_num = forest(forest_info, player_info)
         elif room_num == 9:
-            player = hideout(player)
+            player_info = hideout(player_info)
         elif room_num == 10:
-            back_room, player, room_num = backRoom(back_room, player)
-        if not player:
+            back_room, player_info, room_num = backRoom(back_room, player_info)
+        if not player_info:
             display("GAME OVER")
             print('Play Again?')
             choice = choiceInput(['y', 'yes', 'n', 'no'])
             if choice in ['n','no']:
                 break
-        if player == True:
+        if player_info == True:
             print('Play Again?')
             choice = choiceInput(['y', 'yes', 'n', 'no'])
             if choice in ['n','no']:
