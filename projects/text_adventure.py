@@ -208,6 +208,10 @@ rooms = {
     'hideout': 9,
     'back room': 10
 }
+sheriff_office = {
+    'jay': True
+}
+
 def sheriffOffice(room,player):
     if room['jay']:
         display('You are in your office building. There is a desk, and a small cell with Jay the Outlaw in it. There are two doors, one in the back and one in the front')
@@ -282,7 +286,9 @@ def sheriffOffice(room,player):
             print(f'Inventory: {', '.join(player['inventory'])}')
 
  
-
+town_square = {
+    'begging': True
+}
 def townSquare(room, player):
     display("You are in the town square. There is an old beggar sitting on a bench. You can head off to the Westaurant, the church, the ranch, the clothes shop, or the sheriff's office.")
     while True:
@@ -292,7 +298,7 @@ def townSquare(room, player):
             inspected = choiceInput(player['inventory'] + ['beggar'])
             if inspected == 'beggar':
                 display('>Food for the poor?')
-                if 'dinner' in player['inventory']:
+                if 'dinner' in player['inventory'] and room['begging']:
                     display('Offer food?')
                     choice = choiceInput(['y','yes','n','no'])
                     if choice in ['yes','y']:
@@ -300,6 +306,7 @@ def townSquare(room, player):
                         display('>Really? Here, take these as a sign of my gratitude')
                         player['inventory'].append('dentures')
                         display('You got the Old Dentures!')
+                        room['begging'] = False
                     else:
                         display('You hide the Western Dinner.')
             else:
@@ -319,6 +326,11 @@ def townSquare(room, player):
                     display("It's locked!")
                     continue
             return room, player, rooms[moved]
+grandma_house = {
+    'visited': False,
+    'dentures': False,
+    'bandanna': False
+}
 def grandmaHouse(room, player):
     display("You enter your grandma's house. She is sitting in a rocking chair. The door is behind you.")
     if not room['visited']:
@@ -351,6 +363,10 @@ def grandmaHouse(room, player):
         display("She appears to be asleep.")
     display("You leave through the door.")
     return room, player, 8
+forest_info = {
+    'weasel': False,
+    'bart': False
+}
 def forest(room, player):
     if not room['weasel']:
         if room['bart']:
@@ -395,10 +411,11 @@ def forest(room, player):
                 player = useItem(player,used_item)
         elif action == 'inventory':
             print(f'Inventory: {', '.join(player['inventory'])}')
-        elif action == move:
+        elif action == 'move':
             display('Move where?')
             moved = choiceInput(["grandma's house", 'ranch', "sheriff's office"])
             return room, player, rooms[moved]
+clothes_shop = {}
 def clothesShop(room, player):
     display("Taylor the Taylor is sitting at a desk.")
     display(">Hello! What can I do for you today?")
@@ -474,6 +491,9 @@ def church(room, player):
         else:
             display('You leave the church.')
             return room, player, 1
+westaurant_info = {
+    'jed': False
+}
 def westaurant(room, player):
     if room['jed']:
         display("You enter the westaurant. Jed is dead, but Leviticus is still here.")
@@ -481,6 +501,8 @@ def westaurant(room, player):
         if 'ranch' in player['inventory']:
             display('>Ranch!')
             display("Leviticus seizes the ranch. He drops a key from his pocket without noticing.")
+            player['inventory'].remove('ranch')
+            player['inventory'].append('key')
             display("You got the Priest's Key!")
         display("You can move into the back room or into the town square.")
         moved = choiceInput(['town square', 'back room'])
@@ -534,118 +556,121 @@ def westaurant(room, player):
             display("You leave through the door.")
             display('>Ranch?')
             return room, player, 1
+ranch_info = {
+    'weasel trap': False,
+    'weasel trade': False
+}
 def ranch(room, player):
     if not room['weasel trap']:
         display("You enter the ranch. Rancher Bob is tending to the animals and Billy the Kid is running around with a strange metal trap. You can move to the forest or town square.")
     else:
         display("You enter the ranch. Rancher Bob is tending to the animals and Billy the Kid is eating a cookie. You can move to the forest or town square.")
     while True:
-        while True:
-            display("Use, Move, Inventory, or Inspect?")
-            action = choiceInput(['inspect', 'use', 'inventory', 'move'])
-            if action == 'inspect':
-                Inspected = choiceInput(player['inventory'] + ['bob','billy'])
-#	if inspected == bob:
-#				if player has given the captured weasel to Bob:
-#					display(>Hey there! Thanks for earlier!)
-#				else:
-#					display(>Oh, hello.)
-#					display(Rancher Bob looks sad)
-#					display(>Sorry about me, i'm just down because this weasel keeps 
-#eating my crops. I can never catch it!)
-#if player has not gotten the weasel trap from billy:
-#display(>Billy is trying to catch it with that weasel trap he 
-#has.)
-#					elif player has a captured weasel:
-#						display(Wait! That's the weasel! Thank you so much! Take 
-#this.)
-#add ranch to inventory
-#display(You got the Rancher's Ranch!)
-#display(>Anyways, see you later.)
-#			elif inspected == billy:
-#				if player has given him the cookie:
-#					display(>Hi mister! Thanks for the cookie!)
-#				else:
-#					display(>Hi mister! I'm trying to catch a weasel!)
-#					display(>All this running around is making me hungry. I could sure go 
-#for a cookie and some milk about now!)
-#if player has a cookie and the milk:
-#	display(>Oh hey! Look at that!)
-#	display(Billy grabs the cookie and milk from you.)
-#	remove cookie from inventory
-#	remove milk from inventory
-#	display(He drops his weasel trap as he runs away.)
-#	display(You got the weasel trap!)
-#	add weasel trap to inventory.
-#			else:
-#				Display normal inspect message for that item
-#		elif action == use:
-#			used_item = choiceInput(player['inventory'])
-#	player_data = useItem(player_data,used_item)
-#		elif action == inventory:
-#	print(f'Inventory: {', '.join(player['inventory'])}')
-#elif action == move:
-#	display(move where?)
-#	moved = choiceInput(town square, forest)
-#	return room, player, and the id of the room moved to
-#def hideout(room, player):
-#	display(You enter the hideout. Standing in the center of the room is a familiar face.)
-#	display(Wearing a bandit bandanna, and munching on one of her signature cookies.)
-#	display(>That's right… I am Bad Guy Bill! Didn't expect that, now did you?)
-#	display(>The clues were there all along- but of course a young whippersnapper like you wouldn't 
-#be able to figure them out!)
-#if player has the bandit bandanna:
-#	display(>I gave you the bandanna you used to sneak in here!)
-#display(>I gave you the cookies to give to Taylor and Billy!)
-#display(>I helped you along every step of your journey!)
-#if the player has the bandit bandanna:
-#display(>I even hinted that I was Bad Guy Bill!)
-#display(>I told you I was a bandit!)
-#display(>All to get you here.)
-#display(>Why?)
-#display(>This town doesn't need a sheriff.)
-#display(>Crime is the way of the world!)
-#display(>I couldn't kill you myself, of course.)
-#display(>“Sheriff murdered by deranged outlaw” is a much better headline than “Sheriff murdered by senile grandma)
-#display(>So that brings us to here.)
-#display(>Now prepare to die!)
-#player = combat(bad guy bill's stats,  player_stats)
-#	if player = False:
-#		return False
-#	else:
-#		display(>You don't want to kill me!)
-#		display(>I'm your sweet old grandma!)
-#		display(>Here, take a cookie! Take a whole batch!)
-#		display(Your grandma throws a tray of cookies in your face!)
-#display(She runs to the door to escape!)		
-#if player has handcuffs in inventory:
-#			remove handcuffs from inventory
-#			display(She trips as she realizes- her ankles are handcuffed together)
-#			display(>You… handcuffed me? With your only pair of handcuffs?)
-#			display(>Nooooo!!!! My crime empire!!!!!)
-#			display(With the town saved, you are revered as the greatest sheriff Westville has 
-#ever seen.)
-#display(And seriously…)
-#display(Those cookies were pretty good.)
-#display(THE END)
-#return true
-#else:
-#	display(you run out the door after her!)
-#	display(as she is running away, you fire a shot from your pistol.)
-#	display(Congratulations. You killed your grandma.)
-#			display(With the town saved, you are revered as the greatest sheriff Westville has 
-#ever seen.)
-#			display(But you will forever have to live with your regret.)
-#			display(THE END)
-#			return true
-#def backRoom(room, player):
-#	display(You enter the back room of the westaurant.)
-#	display(There is some food stored in crates, a small kitchen, and a bottle of milk sitting out.)
-#	display(You got the Milk!)
-#	display(You leave back into the main room.)
-#	return room, player, and 2
-#
-#Set up a dictionary with dictionaries inside it for each room. Each of those dictionaries stores info about the room specific to it and any NPCs in there.
+        display("Use, Move, Inventory, or Inspect?")
+        action = choiceInput(['inspect', 'use', 'inventory', 'move'])
+        if action == 'inspect':
+            inspected = choiceInput(player['inventory'] + ['bob','billy'])
+            if inspected == 'bob':
+                if room['weasel trade']:
+                    display('>Hey there! Thanks for earlier!')
+                else:
+                    display('>Oh, hello.')
+                    display('Rancher Bob looks sad')
+                    display(">Sorry about me, i'm just down because this weasel keeps eating my crops. I can never catch it!")
+                    if not room['weasel trap']:
+                        display(">Billy is trying to catch it with that weasel trap he has.")
+                    elif 'captured weasel' in player['inventory']:
+                        display("Wait! That's the weasel! Thank you so much! Take this.")
+                        player['inventory'].remove('captured weasel')
+                        player['inventory'].append('ranch')
+                        display("You got the Rancher's Ranch!")
+                        display(">Anyways, see you later.")
+            elif inspected == 'billy':
+                if room['weasel trap']:
+                    display(">Hi mister! Thanks for the cookie!")
+                else:
+                    display(">Hi mister! I'm trying to catch a weasel!")
+                    display(">All this running around is making me hungry. I could sure go for a cookie and some milk about now!")
+                    if 'cookie' in player['inventory'] and 'milk' in player['inventory']:
+                        display('>Oh hey! Look at that!')
+                        display('Billy grabs the cookie and milk from you.')
+                        player['inventory'].remove('cookie')
+                        player['inventory'].remove('milk')
+                        player['inventory'].append('weasel trap')
+                        display("He drops his weasel trap as he runs away.")
+                        display("You got the weasel trap!")
+            else:
+                print(items[inspected]['inspect'])
+        elif action == 'use':
+            used_item = choiceInput(player['inventory'])
+            player_data = useItem(player_data,used_item)
+        elif action == 'inventory':
+            print(f'Inventory: {', '.join(player['inventory'])}')
+        elif action == 'move':
+            display("Move where?")
+            moved = choiceInput(['town square', 'forest'])
+            return room, player, rooms[moved]
+def hideout(player):
+    display("You enter the hideout. Standing in the center of the room is a familiar face.")
+    display("Wearing a bandit bandanna, and munching on one of her signature cookies.")
+    display(">That's right… I am Bad Guy Bill! Didn't expect that, now did you?")
+    display(">The clues were there all along- but of course a young whippersnapper like you wouldn't be able to figure them out!")
+    if 'bandanna' in player['inventory']:
+        display(">I gave you the bandanna you used to sneak in here!")
+    display(">I gave you the cookies to give to Taylor and Billy!")
+    display(">I helped you along every step of your journey!")
+    if 'bandanna' in player['inventory']:
+        display(">I even hinted that I was Bad Guy Bill!")
+        display(">I told you I was a bandit!")
+    display(">All to get you here.")
+    display(">Why?")
+    display(">This town doesn't need a sheriff.")
+    display(">Crime is the way of the world!")
+    display(">I couldn't kill you myself, of course.")
+    display('>"Sheriff murdered by deranged outlaw" is a much better headline than "Sheriff murdered by senile grandma"')
+    display(">So that brings us to here.")
+    display(">Now prepare to die!")
+    player = combat({'name': 'your Grandma','charisma': 3,'hp': 4}, player)
+    if not player:
+        return False
+    display(">You don't want to kill me!")
+    display(">I'm your sweet old grandma!")
+    display(">Here, take a cookie! Take a whole batch!")
+    display("Your grandma throws a tray of cookies in your face!")
+    display("She runs to the door to escape!")		
+    if 'handcuffs' in player['inventory']:
+            player['inventory'].remove('handcuffs')
+            display("She trips as she realizes- her ankles are handcuffed together")
+            display(">You… handcuffed me? With your only pair of handcuffs?")
+            display(">Nooooo!!!! My crime empire!!!!!")
+            display("With the town saved, you are revered as the greatest sheriff Westville has ever seen.")
+            display("And seriously…")
+            display("Those cookies were pretty good.")
+            display("THE END")
+            return True
+    else:
+        display('You run out the door after her!')
+        display("As she is running away, you fire a shot from your pistol.")
+        display("Congratulations. You killed your grandma.")
+        display("With the town saved, you are revered as the greatest sheriff Westville has ever seen.")
+        display("But you will forever have to live with your regret.")
+        display("THE END")
+        return True
+back_room = {
+    'milk': False
+}
+def backRoom(room,player):
+    display("You enter the back room of the westaurant.")
+    if not room['milk']:
+        display("There is some food stored in crates, a small kitchen, and a bottle of milk sitting out.")
+        display("You got the Milk!")
+        room['milk'] = True
+    else:
+        display("There is some food stored in crates, and a small kitchen")
+    display("You leave back into the main room.")
+    return room, player, 2
+
+
 
 player = {
     'charisma': 0,
@@ -656,51 +681,39 @@ player = {
     'inventory': [],
     'equipped': []
 }
-#make a variable called room set to 4. This stores what room you are in
-#while True:
-#	display(Welcome to Westville! This rough-and-tumble town is troubled by a gang of bandits led by 
-#the infamous Bad Guy Bill. The previous sheriff of this town was killed by Bad Guy Bill. Now you 
-#are the replacement. Your mission: Find and incarcerate Bad Guy Bill. Only trouble is, nobody 
-#knows where or who he is. Maybe you should ask your grandma.)
-#	forever:
-#		if room = 1:
-#		town square info and player and room = townSquare(town square info, 
-#player)
-#	elif room = 2:
-#		westaurant and player and room = townSquare(westaurant info, 
-#player)
-#elif room = 3:
-#		grandma's house info and player and room = grandmaHouse(grandma's house 
-#info, player)
-#		elif room = 4:
-#		sheriff's office info and player and room = sheriffsOffice(sheriff's office info, 
-#player)
-#	elif room = 5:
-#		clothes shop info and player and room = clothesShop(clothes shop info, 
-#player)
-#elif room = 6:
-#		church info and player and room = church(church info,  player)
-#	elif room = 7:
-#		ranch info and player and room = ranch(ranch info,  player)
-#	elif room = 8:
-#		forest info and player and room = forest(forest info,  player)
-#elif room = 9:
-#		won = hideout(bandit hideout info,  
-#player)
-#if won is False:
-#	display(GAME OVER)
-#choice = choiceInput(y, yes, n, no)
-#		if choice is n or no:
-#			exit loop
-#elif room = 10:
-#		westaurant back room info and player and room = backRoom(westaurant back 
-#room info,  player)
-#if player is False:
-#	display(GAME OVER)
-#	display(Play again?)
-#	choice = choiceInput(y, yes, n, no)
-#	if choice is n or no:
-#		exit loop
-#	
-#
-sheriffOffice({'jay': True},player)
+room_num = 4
+while True:
+    display("Welcome to Westville! This rough-and-tumble town is troubled by a gang of bandits led by the infamous Bad Guy Bill. The previous sheriff of this town was killed by Bad Guy Bill. Now you are the replacement. Your mission: Find and incarcerate Bad Guy Bill. Only trouble is, nobody knows where or who he is. Maybe you should ask your grandma.")
+    while True:
+        if room_num == 1:
+            town_square, player, room_num = townSquare(town_square, player)
+        elif room_num == 2:
+            westaurant_info, player, room_num = townSquare(westaurant_info, player)
+        elif room_num == 3:
+            grandma_house, player, room_num = grandmaHouse(grandma_house, player)
+        elif room_num == 4:
+            sheriff_office, player, room_num = sheriffOffice(sheriff_office, player)
+        elif room_num == 5:
+                clothes_shop, player, room_num = clothesShop(clothes_shop, player)
+        elif room_num == 6:
+                chruch_info, player, room_num = church(chruch_info,  player)
+        elif room_num == 7:
+            ranch_info, player, room_num = ranch(ranch_info, player)
+        elif room_num == 8:
+            forest_info, player, room_num = forest(forest_info, player)
+        elif room_num == 9:
+            player = hideout(player)
+        elif room_num == 10:
+            back_room, player, room_num = backRoom(back_room, player)
+        if not player:
+            display("GAME OVER")
+            print('Play Again?')
+            choice = choiceInput(['y', 'yes', 'n', 'no'])
+            if choice in ['n','no']:
+                break
+        if player == True:
+            print('Play Again?')
+            choice = choiceInput(['y', 'yes', 'n', 'no'])
+            if choice in ['n','no']:
+                break
+        
