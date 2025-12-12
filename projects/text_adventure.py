@@ -280,13 +280,17 @@ def sheriffOffice(room,player):
                 display(items[inspected]['inspect'])
         elif action == 'use':
             print('Use what?')
-            used = choiceInput(player['inventory'] + ['front door','back door'])
+            used = choiceInput(player['inventory'] + ['front door','back door','cancel','no','nevermind','exit'])
             if used == 'front door':
                 display('You go through the front door, out into the town square.')
                 return room, player, 1
             elif used == 'back door':
                 display('You go through the back door, out into the forest.')
                 return room, player, 8
+            elif used == 'door':
+                display('Which door? Try use  back door instead')
+            elif used in ['cancel','no','nevermind','exit']:
+                continue
             else:
                 player = useItem(player,used)
         elif action == 'inventory':
@@ -322,7 +326,9 @@ def townSquare(room, player):
             else:
                 display(items[inspected]['inspect'])
         elif action == 'use':
-            used_item = choiceInput(player['inventory'])
+            used_item = choiceInput(player['inventory'] + ['cancel','no','nevermind','exit'])
+            if used_item in ['cancel','no','nevermind','exit']:
+                continue
             player = useItem(player,used_item)
         elif action == 'inventory':
             print(f'Inventory: {', '.join(player['inventory'])}')
@@ -392,10 +398,10 @@ def forest(room, player):
             display("You enter the forest. There is a bandit sitting on a tree stump. Your Grandma's house is just a short walk away. The Ranch and Sheriff's office are nearby.")
     if 'badge' in player['equipped'] and not room['bart']:
         display(">Hang on a minute… You're the sheriff! Take this!")
-        player = combat({'name': 'Bandit Bart','charisma': 1,'hp': 2}, player)
+        player = combat({'name': 'Bandit Bart','charisma': 0,'hp': 2}, player)
         if not player:
-            return False
-        room['bart'] = False
+            return False, False, False
+        room['bart'] = True
         player['money'] += 5
     while True:
         display("Use, Move, Inventory, or Inspect?")
@@ -415,11 +421,13 @@ def forest(room, player):
             else:
                 display(items[inspected]['inspect'])
         elif action == 'use':
-            used_item = choiceInput(player['inventory'])
+            used_item = choiceInput(player['inventory'] + ['cancel','no','nevermind','exit'])
             if used_item == 'weasel trap':
                 display("You catch the weasel in the trap!")
                 player['inventory'].append('captured weasel')
                 room['weasel'] = True
+            elif used_item in ['cancel','no','nevermind','exit']:
+                continue
             else:
                 player = useItem(player,used_item)
         elif action == 'inventory':
@@ -630,7 +638,9 @@ def ranch(room, player):
             else:
                 print(items[inspected]['inspect'])
         elif action == 'use':
-            used_item = choiceInput(player['inventory'])
+            used_item = choiceInput(player['inventory'] + ['cancel','no','nevermind','exit'])
+            if used_item in ['cancel','no','nevermind','exit']:
+                continue
             player = useItem(player,used_item)
         elif action == 'inventory':
             print(f'Inventory: {', '.join(player['inventory'])}')
