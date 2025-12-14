@@ -1,7 +1,20 @@
 #BZ 1st Text Adventure Game
 import time as t
 import random as r
-def choiceInput(valid_choices):
+def getAction(options):
+    while True:
+            action_full = input().strip().lower()
+            if ' ' in action_full:
+                action = action_full[0:action_full.find(' ')]
+                acted = action_full[action_full.find(' ') + 1:]
+            else:
+                action = action_full
+                acted = ''
+            if action in options:
+                return action, acted
+            else:
+                print('Please select a valid action!')
+def choiceInput(valid_choices, error = 'Please select a valid choice!'):
     while True:
         choice = input().strip().lower()
         if choice in valid_choices:
@@ -10,7 +23,7 @@ def choiceInput(valid_choices):
             choice = int(choice)
             if choice <= len(valid_choices) and choice > 0:
                 return valid_choices[choice-1]
-        print('Please select a valid choice!')
+        print(error)
 def display(text = 'Message not defined!', wait = 0):
     if wait == 0:
         wait = len(text)/40
@@ -26,10 +39,12 @@ def useItem(player, item):
         player['hp'] = player['hp'] + 2
         if player['hp'] > player['max hp']:
             player['hp'] = player['max hp']
+        player['inventory'].remove('dinner')
     elif item == 'beer':
-        player['max hp'] = player['max hp'] + 1
+        if player['max hp'] < 7:
+            player['max hp'] = player['max hp'] + 1
         player['drunk turns'] = player['drunk turns'] + 2
-        player['charisma'] = player['charisma'] - 1
+        player['inventory'].remove('beer')
     elif item in ['mustache','hat','badge','bandanna']:
         if item in player['equipped']:
             print('You already have that equipped!')
@@ -57,7 +72,7 @@ def combat(enemy, player):
             display('You no longer feel tipsy.')
         turn += 1
         print("Attack, Persuade, or Use?")
-        action = choiceInput(['attack','persuade','use'])
+        action, acted = getAction(['attack','persuade','use'])
         if turn == 1:
             enemy_choice = r.choice(['persuade','attack'])
         elif enemy['hp'] < 2:
@@ -67,7 +82,7 @@ def combat(enemy, player):
         if action == 'use':
             if enemy_choice == 'attack':
                 player['hp'] -=  2
-                display(f'{enemy['name']} shoots you!')
+                display(f'{enemy['name']} shoots you for two damage!')
                 if player['hp'] < 1:
                     display('You died!')
                     return False
@@ -76,8 +91,15 @@ def combat(enemy, player):
             elif enemy_choice == 'persuade':
                 display(f'{enemy['name']} tries to persuade you to not use an item... and fails.')
             if player['inventory']:
-                display('What item are you using?')
-                used = choiceInput(player['inventory'])
+                if acted:
+                    if not acted in player['inventory']:
+                        display(f'You don\'t have a {acted}')
+                        continue
+                    else:
+                        used = acted
+                else:
+                    display('What item are you using?')
+                    used = choiceInput(player['inventory'])
                 player = useItem(player,used)
             else:
                 display("You don't have an item to use!")
@@ -86,7 +108,7 @@ def combat(enemy, player):
                 display('You both shoot!')
                 if r.randint(0,1) == 0:
                     player['hp'] -= 2
-                    display(f'Your bullet goes wide! {enemy['name']} shoots you!')
+                    display(f'Your bullet goes wide! {enemy['name']} shoots you for two damage!')
                     if player['hp'] < 1:
                         display('You died!')
                         return False
@@ -99,6 +121,8 @@ def combat(enemy, player):
                         if enemy['name'] != 'your Grandma':
                             display(f'{enemy['name']} dies!')
                         return player
+                    else:
+                        display('They survived!')
             elif enemy_choice == 'persuade':
                 if player['drunk turns'] > 0:
                     persuaded = charismaCheck(enemy['charisma'], 4 + player['charisma'])
@@ -113,6 +137,8 @@ def combat(enemy, player):
                         if enemy['name'] != 'your Grandma':
                             display(f'{enemy['name']} dies!')
                         return player
+                    else:
+                        display('They survived!')
         elif action == 'persuade':
             if enemy_choice == 'attack':
                 if player['drunk turns'] > 0:
@@ -123,7 +149,7 @@ def combat(enemy, player):
                     display(f'You persuade {enemy['name']} not to shoot you!')
                 else:
                     player['hp'] -= 2
-                    display(f'You try to persuade them, but {enemy['name']} still shoots you!')
+                    display(f'You try to persuade them, but {enemy['name']} still shoots you for two damage!')
                     if player['hp'] < 1:
                         display('You died!')
                         return False
@@ -207,7 +233,13 @@ rooms = {
     'town square': 1,
     'westaurant': 2,
     "grandma's house": 3,
+    'grandmas house': 3,
+    'grandma': 3,
+    'grandma house': 3,
     "sheriff's office": 4,
+    'sheriffs office': 4,
+    'sheriff office': 4,
+    'sheriff': 4,
     'clothes shop': 5,
     'church': 6,
     'ranch': 7,
@@ -226,13 +258,21 @@ def sheriffOffice(room,player):
         display('You are in your office building. There is a desk, and a small empty jail cell. There are two doors, one in the back and one in the front.')
     while True:
         print('Use, Inventory, or Inspect?')
-        action = choiceInput(['use','inventory','inspect'])
+        action, acted = getAction(['use','inventory','inspect'])
         if action == 'inspect':
-            print('What are you inspecting?')
             if room['jay']:
-                inspected = choiceInput(player['inventory'] + ['desk','jay','outlaw','jaw the outlaw','front door','back door','door'])
+                options = player['inventory'] + ['jay','outlaw','jaw the outlaw','desk','front door','back door','door','cancel','no','nevermind','exit']
             else:
-                inspected = choiceInput(player['inventory'] + ['desk','front door','back door','door'])
+                options = player['inventory'] + ['desk','front door','back door','door','cancel','no','nevermind','exit']
+            if acted:
+                if acted in options:
+                    inspected = acted
+                else:
+                    display(f'There is no {acted} here. Try inspecting a person to talk to them.')
+                    continue
+            else:
+                print('What are you inspecting?')
+                inspected = choiceInput(options,f'That isn\'t here. What are you inspecting?')
             if inspected == 'desk':
                 display("It's a wooden desk with some papers on it. Nothing special.")
             elif inspected in ['jay','outlaw','jaw the outlaw']:
@@ -264,6 +304,7 @@ def sheriffOffice(room,player):
                     else:
                         display('> Heads! Darn.')
                         player['money'] += wager * 2
+                        display(f'You got ${wager}!')
                         continue
                 elif action == 'free':
                     display("> You've come to free me? Yipee! Take me handcuffs.")
@@ -276,11 +317,23 @@ def sheriffOffice(room,player):
                 display("It's a wooden door. It leads to the forest")
             elif inspected == 'door':
                 display("It's a wooden door.")
+            elif inspected == 'cell':
+                display('It\'s an old cell, built a while ago. Still sturdy though. Jay the Outlaw is sitting inside it, flipping a coin.')
+            elif inspected in ['cancel','no','nevermind','exit']:
+                continue
             else:
                 display(items[inspected]['inspect'])
         elif action == 'use':
-            print('Use what?')
-            used = choiceInput(player['inventory'] + ['front door','back door','cancel','no','nevermind','exit'])
+            options = player['inventory'] + ['front door','back door','cancel','no','nevermind','exit']
+            if acted:
+                if acted in options:
+                    used = acted
+                else:
+                    display(f'You can\'t use that.')
+                    continue
+            else:
+                print('Use what?')
+                used = choiceInput(options,'You can\'t use that! Try using the back door to move out into the forest, or "cancel" to try doing something else.')
             if used == 'front door':
                 display('You go through the front door, out into the town square.')
                 return room, player, 1
@@ -288,7 +341,7 @@ def sheriffOffice(room,player):
                 display('You go through the back door, out into the forest.')
                 return room, player, 8
             elif used == 'door':
-                display('Which door? Try use  back door instead')
+                display('Which door? Try "use back door" instead')
             elif used in ['cancel','no','nevermind','exit']:
                 continue
             else:
@@ -306,10 +359,18 @@ def townSquare(room, player):
     display("You are in the town square. There is an old beggar sitting on a bench. You can head off to the Westaurant, the church, the ranch, the clothes shop, or the sheriff's office.")
     while True:
         display("Use, Move, Inventory, or Inspect?")
-        action = choiceInput(['inspect', 'use', 'inventory', 'move'])
+        action, acted = getAction(['inspect', 'use', 'inventory', 'move'])
         if action == 'inspect':
-            print('What are you inspecting?')
-            inspected = choiceInput(player['inventory'] + ['beggar'])
+            options = player['inventory'] + ['beggar','cancel','no','nevermind','exit','bench']
+            if acted:
+                if acted in options:
+                    inspected = acted
+                else:
+                    display(f'There is no {acted} here. Try inspecting a person to talk to them.')
+                    continue
+            else:
+                print('What are you inspecting?')
+                inspected = choiceInput(options,'That isn\'t here. What are you inspecting?')
             if inspected == 'beggar':
                 display('>Food for the poor?')
                 if 'dinner' in player['inventory'] and room['begging']:
@@ -323,20 +384,41 @@ def townSquare(room, player):
                         room['begging'] = False
                     else:
                         display('You hide the Western Dinner.')
+            elif inspected == 'bench':
+                display("It's a simple bench, and well maintained.")
+            elif inspected in ['cancel','no','nevermind','exit']:
+                continue
             else:
                 display(items[inspected]['inspect'])
         elif action == 'use':
-            used_item = choiceInput(player['inventory'] + ['cancel','no','nevermind','exit'])
-            if used_item in ['cancel','no','nevermind','exit']:
+            options = player['inventory'] + ['cancel','no','nevermind','exit']
+            if acted:
+                if acted in options:
+                    used = acted
+                else:
+                    display(f'You can\'t use that.')
+                    continue
+            else:
+                print('Use what?')
+                used = choiceInput(options,'You can\'t use that! Type "cancel" to try doing something else.')
+            if used in ['cancel','no','nevermind','exit']:
                 continue
-            player = useItem(player,used_item)
+            player = useItem(player,used)
         elif action == 'inventory':
             print(f'Inventory: {', '.join(player['inventory'])}')
             print(f'Money: {player['money']}')
             print(f'Equipped: {', '.join(player['equipped'])}')
         elif action == 'move':
-            display('move where?')
-            moved = choiceInput(['westaurant', 'church', 'ranch', 'clothes shop', "sheriff's office"])
+            options = ['westaurant', 'church', 'ranch', 'clothes shop', "sheriff's office"]
+            if acted:
+                if acted in options:
+                    moved = acted
+                else:
+                    display(f'You can\'t move there.')
+                    continue
+            else:
+                print('Move where?')
+                used = choiceInput(options,'You can\'t move there! Try moving to the Ranch, or type "cancel" to try doing something else.')
             if moved == 'church':
                 if 'key' in player['inventory']:
                     display('You unlock the door with the key')
@@ -367,8 +449,10 @@ def grandmaHouse(room, player):
             display("You got Grandma's Cookie!")
             room['dentures'] = True
         else:
-            display('Oh i wish i could find them…')
-    elif player['charisma'] == 3 and not room['bandanna']:
+            display('>Oh i wish i could find them…')
+    elif not (player['charisma'] == 3 and not room['bandanna']):
+        display("She appears to be asleep.")
+    if player['charisma'] == 3 and not room['bandanna']:
         display(">Oh hello dearie! Want to hear a story?")
         input()
         display(">Of course you do! Back when i was young i was part of this fantasmic group of flapjacks. We had so much fun! We used to wear these scarves on our head. Like this one!")
@@ -377,9 +461,9 @@ def grandmaHouse(room, player):
         display(">We always used to hang out at the church, you know?")
         display(">Have fun!")
         room['bandanna'] = True
-    else:
-        display("She appears to be asleep.")
     display("You leave through the door.")
+    if (not room['dentures']) or (not room['bandanna']):
+        display('>Come back later!')
     return room, player, 8
 forest_info = {
     'weasel': False,
@@ -403,40 +487,69 @@ def forest(room, player):
             return False, False, False
         room['bart'] = True
         player['money'] += 5
+        display("You got $5!")
     while True:
         display("Use, Move, Inventory, or Inspect?")
-        action = choiceInput(['inspect', 'use', 'inventory', 'move'])
-        options = list(player['inventory'])
+        action, acted = getAction(['inspect', 'use', 'inventory', 'move'])
+        options = player['inventory'] + ['cancel','no','nevermind','exit','stump']
         if not room['bart']:
             options.append('bandit')
         if not room['weasel']:
             options.append('weasel')
         if action == 'inspect':
-            print('What are you inspecting?')
-            inspected = choiceInput(options)
+            if acted:
+                if acted in options:
+                    inspected = acted
+                else:
+                    display(f'There is no {acted} here.')
+                    continue
+            else:
+                print('What are you inspecting?')
+                inspected = choiceInput(options,'That isn\'t here. What are you inspecting?')
+            
             if inspected == 'bandit':
                 display('>Hey dude.')
             elif inspected == 'weasel':
                 display("It's just a weasel. It is a bit fat, looks like it has been eating well.")
+            elif inspected == 'stump':
+                display("A tree stump from an old tree. It's sturdy and covered in moss.")
             else:
                 display(items[inspected]['inspect'])
         elif action == 'use':
-            used_item = choiceInput(player['inventory'] + ['cancel','no','nevermind','exit'])
-            if used_item == 'weasel trap':
+            options = player['inventory'] + ['cancel','no','nevermind','exit']
+            if acted:
+                if acted in options:
+                    used = acted
+                else:
+                    display(f'You can\'t use that.')
+                    continue
+            else:
+                print('Use what?')
+                used = choiceInput(options,'You can\'t use that! Type "cancel" to try doing something else.')
+            if used == 'weasel trap':
                 display("You catch the weasel in the trap!")
                 player['inventory'].append('captured weasel')
                 room['weasel'] = True
-            elif used_item in ['cancel','no','nevermind','exit']:
+            elif used in ['cancel','no','nevermind','exit']:
                 continue
             else:
-                player = useItem(player,used_item)
+                player = useItem(player,used)
         elif action == 'inventory':
             print(f'Inventory: {', '.join(player['inventory'])}')
             print(f'Money: {player['money']}')
             print(f'Equipped: {', '.join(player['equipped'])}')
         elif action == 'move':
-            display('Move where?')
-            moved = choiceInput(["grandma's house", 'ranch', "sheriff's office"])
+            options = ["grandma's house",'grandmas house','grandma','grandma house' 'ranch', "sheriff's office",'sheriffs office','sheriff office']
+            if acted:
+                if acted in options:
+                    moved = acted
+                else:
+                    display(f'You can\'t move there.')
+                    continue
+            else:
+                print('Move where?')
+                used = choiceInput(options,'You can\'t move there! Try moving to grandma\'s house, or type "cancel" to try doing something else.')
+            
             return room, player, rooms[moved]
 clothes_shop = {}
 def clothesShop(room, player):
@@ -472,6 +585,7 @@ def clothesShop(room, player):
         display(f'>That will be ${4 - player['charisma']}.')
         if player['money'] >= 4 - player['charisma']:
             display('You got the Glue-On Mustache!')
+            player['money'] -= 4 - player['charisma']
             player['inventory'].append('mustache')
         else:
             display(">Aw, darn… you don't have enough. Come back later when you have some more!")
@@ -479,6 +593,7 @@ def clothesShop(room, player):
         display(f'>That will be ${4 - player['charisma']}.')
         if player['money'] >= 4 - player['charisma']:
             display('You got the Cowboy Hat!')
+            player['money'] -= 4 - player['charisma']
             player['inventory'].append('hat')
         else:
             display(">Aw, darn… you don't have enough. Come back later when you have some more!")
@@ -509,6 +624,7 @@ def church(room, player):
                 return False, False, False
             room['garret'] = True
             player['money'] += 5
+            display("You got $5!")
         else:
             display("You can walk down into the bandit hideout or out into the town square.")
             moved = choiceInput(['hideout', 'town square', 'bandit hideout'])
@@ -560,6 +676,7 @@ def westaurant(room, player):
                 return False, False, False
             room['jed'] = True
             player['money'] += 5
+            display("You got $5!")
             display("You can move into the back room or into the town square.")
             moved = choiceInput(['town square', 'back room'])
             if moved == 'back room':
@@ -572,18 +689,20 @@ def westaurant(room, player):
             display("Jed is looking at you.")
             display(">Hey! Would you like to buy some food?")
             display("Western Dinner, Western Beer, or Leave?")
-            choice = choiceInput(['dinner', 'beer', 'leave'])
-            if choice == 'dinner':
+            choice = choiceInput(['dinner', 'western dinner', 'western beer' 'beer', 'leave'])
+            if choice in ['dinner', 'western dinner']:
                 display(f">That will be ${3 - player['charisma']}.")
                 if player['money'] >= 3 - player['charisma']:
-                    display('You got the Western Dinner!')
+                    player['money'] -= 3 - player['charisma']
+                    display('You got the Western Dinner! Save it for later to restore some health.')
                     player['inventory'].append('dinner')
                 else:
                     display(">Aw, darn… you don't have enough. Come back later when you have some more!")
-            elif choice == 'beer':
+            elif choice in ['beer','western beer']:
                 display(f">That will be ${2 - player['charisma']}.")
                 if player['money'] >= 2 - player['charisma']:
-                    display('You got the Western Beer!')
+                    player['money'] -= 2 - player['charisma']
+                    display('You got the Western Beer! It will increase your max health but might have some side effects...')
                     player['inventory'].append('beer')
                 else:
                     display(">Aw, darn… you don't have enough. Come back later when you have some more!")
@@ -601,11 +720,20 @@ def ranch(room, player):
         display("You enter the ranch. Rancher Bob is tending to the animals and Billy the Kid is eating a cookie. You can move to the forest or town square.")
     while True:
         display("Use, Move, Inventory, or Inspect?")
-        action = choiceInput(['inspect', 'use', 'inventory', 'move'])
+        action, acted = getAction(['inspect', 'use', 'inventory', 'move'])
         if action == 'inspect':
-            print('What are you inspecting?')
-            inspected = choiceInput(player['inventory'] + ['bob','billy'])
-            if inspected == 'bob':
+            options = choiceInput(player['inventory'] + ['bob','billy','rancher','rancher bob','billy the kid','kid','cancel','no','nevermind','exit'])
+            if acted:
+                if acted in options:
+                    inspected = acted
+                else:
+                    display(f'There is no {acted} here.')
+                    continue
+            else:
+                print('What are you inspecting?')
+                inspected = choiceInput(options,'That isn\'t here. What are you inspecting?')
+            
+            if inspected in ['bob','rancher','rancher bob']:
                 if room['weasel trade']:
                     display('>Hey there! Thanks for earlier!')
                 else:
@@ -619,8 +747,12 @@ def ranch(room, player):
                         player['inventory'].remove('captured weasel')
                         player['inventory'].append('ranch')
                         display("You got the Rancher's Ranch!")
-                        display(">Anyways, see you later.")
-            elif inspected == 'billy':
+                    if not 'handcuffs' in player['inventory']:
+                        display(">I really appreciate all the work you do as sheriff.")
+                        display(">I can't wait for you to catch that rascal.")
+                        display(">Too bad you used your only handcuffs on Jay.")
+                    display(">Anyways, see you later.")
+            elif inspected in ['billy', 'billy the kid','kid']:
                 if room['weasel trap']:
                     display(">Hi mister! Thanks for the cookie!")
                 else:
@@ -635,20 +767,40 @@ def ranch(room, player):
                         display("He drops his weasel trap as he runs away.")
                         display("You got the weasel trap!")
                         room['weasel trap'] = True
+            elif inspected in ['cancel','no','nevermind','exit']:
+                continue
             else:
                 print(items[inspected]['inspect'])
         elif action == 'use':
-            used_item = choiceInput(player['inventory'] + ['cancel','no','nevermind','exit'])
-            if used_item in ['cancel','no','nevermind','exit']:
+            options = player['inventory'] + ['cancel','no','nevermind','exit']
+            if acted:
+                if acted in options:
+                    used = acted
+                else:
+                    display(f'You can\'t use that.')
+                    continue
+            else:
+                print('Use what?')
+                used = choiceInput(options,'You can\'t use that! Type "cancel" to try doing something else.')
+            
+            if used in ['cancel','no','nevermind','exit']:
                 continue
-            player = useItem(player,used_item)
+            player = useItem(player,used)
         elif action == 'inventory':
             print(f'Inventory: {', '.join(player['inventory'])}')
             print(f'Money: {player['money']}')
             print(f'Equipped: {', '.join(player['equipped'])}')
         elif action == 'move':
-            display("Move where?")
-            moved = choiceInput(['town square', 'forest'])
+            options = ['town square', 'forest']
+            if acted:
+                if acted in options:
+                    moved = acted
+                else:
+                    display(f'You can\'t move there.')
+                    continue
+            else:
+                print('Move where?')
+                used = choiceInput(options,'You can\'t move there! Try moving to the forest, or type "cancel" to try doing something else.')
             return room, player, rooms[moved]
 def hideout(player):
     display("You enter the hideout. Standing in the center of the room is a familiar face.")
@@ -718,7 +870,7 @@ while True:
     player_info = {
         'charisma': 0,
         'max hp': 4,
-        'hp': 10,
+        'hp': 4,
         'money': 5,
         'drunk turns': 0,
         'inventory': [],
