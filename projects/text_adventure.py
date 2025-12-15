@@ -410,7 +410,7 @@ def townSquare(room, player):
                     continue
             else:
                 print('Move where?')
-                used = choiceInput(options,'You can\'t move there! Try moving to the \033[36mranch\033[0m, or type "cancel" to try doing something else.')
+                moved = choiceInput(options,'You can\'t move there! Try moving to the \033[36mranch\033[0m, or type "cancel" to try doing something else.')
             if moved == 'church':
                 if 'key' in player['inventory']:
                     display('You unlock the door with the key')
@@ -780,7 +780,7 @@ def ranch(room, player):
                     continue
             else:
                 print('Move where?')
-                used = choiceInput(options,'You can\'t move there! Try moving to the forest, or type "cancel" to try doing something else.')
+                moved = choiceInput(options,'You can\'t move there! Try moving to the forest, or type "cancel" to try doing something else.')
             return room, player, rooms[moved]
 def hideout(player):
     display("You enter the hideout. Standing in the center of the room is a familiar face.")
