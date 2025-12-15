@@ -457,6 +457,8 @@ def grandmaHouse(room, player):
     display("You leave through the door.")
     if (not room['dentures']) or (not room['bandanna']):
         display('>Come back later!')
+        if not 'badge' in player['inventory']:
+            display('>And put some clothes on!')
     return room, player, 8
 def forest(room, player):
     if not room['weasel']:
