@@ -43,6 +43,7 @@ def useItem(player, item):
     elif item == 'beer':
         if player['max hp'] < 7:
             player['max hp'] = player['max hp'] + 1
+            player['hp'] += 1
         player['drunk turns'] = player['drunk turns'] + 2
         player['inventory'].remove('beer')
     elif item in ['mustache','hat','badge','bandanna']:
@@ -165,32 +166,32 @@ items = {
     },
     'dinner': {
         'name': "Western Dinner", 
-        'inspect': "A nice western dinner of steak and potatoes. A hearty meal that will fill you up even if you're starving.",
+        'inspect': "A nice western dinner of steak and potatoes. A hearty meal that will fill you up even if you're starving. Eat it to gain 2 HP (1 gun shot).",
         'use': "You eat the Western Dinner. Yum!"
     },
     'beer': {
         'name': "Western Beer", 
-        'inspect': "A strong alchoholic drink traditional to Westville. What could go wrong?",
+        'inspect': "A strong alchoholic drink traditional to Westville. What could go wrong? Increases your max HP by 1 up to 3 times.",
         'use': "You drink the Western Beer. You feel a bit tipsy."
     },
     'mustache': {
         'name': "Glue-On Mustache", 
-        'inspect': "A silly mustache that attaches just below your nose. It makes you look very sophisticated.",
+        'inspect': "A silly mustache that attaches just below your nose. It makes you look very sophisticated. Increases your charisma when worn.",
         'use': "You equip the Glue-On Mustache. How suave!"
     },
     'hat': {
         'name': "Cowboy Hat", 
-        'inspect': "A traditional western hat. Perfect for a sheriff like you!",
+        'inspect': "A traditional western hat. Perfect for a sheriff like you! Increases your charisma when worn.",
         'use': "You don the Cowboy Hat. How dashing!"
     },
     'badge': {
         'name': "Sheriff's Badge", 
-        'inspect': "A leather badge adorned with a metal star. Lets everyone know who you are!",
+        'inspect': "A leather badge adorned with a metal star. Lets everyone know who you are! Increases your charisma and makes bandits hostile when worn.",
         'use': "You equip the Sheriff's Badge!"
     },
     'dentures': {
         'name': "Old Dentures", 
-        'inspect': "An old pair of dentures... gross",
+        'inspect': "An old pair of dentures... gross. Maybe an old person will want them?",
         'use': "For- what? Gross!"
     },
     'ranch': {
@@ -281,8 +282,9 @@ def sheriffOffice(room,player):
                     continue
                 elif action == 'play':
                     display("> 'kay then, how much you wagerin'?")
+                    display(f'You have ${player['money']}.')
                     while True:
-                        wager = input()
+                        wager = input().replace('$','').replace(' ','')
                         if wager.isdigit():
                             wager = int(wager)
                             if wager <= player['money']:
